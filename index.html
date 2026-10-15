@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Kahue Muniz — Designer Visual & Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#141210;color:#ece8e2;font-family:'Archivo',Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#ece8e2;text-decoration:none}
+a:hover{color:#2e8bff}
+*{box-sizing:border-box}
+[data-reveal]{transition:transform 1s cubic-bezier(.2,.7,.1,1),opacity 1s cubic-bezier(.2,.7,.1,1),clip-path 1.2s cubic-bezier(.2,.7,.1,1)}
+html.km-anim [data-reveal="fade"]:not([data-in]){opacity:0;transform:translateY(36px)}
+html.km-anim [data-reveal="up"]:not([data-in]){transform:translateY(105%)}
+html.km-anim [data-reveal="clip"]:not([data-in]){clip-path:inset(0 0 100% 0)}
+@keyframes km-in{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@keyframes km-fill{from{width:0}to{width:100%}}
+@keyframes km-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+::selection{background:#2e8bff;color:#141210}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#141210">
+
+<sc-if value="{{ showIntro }}" hint-placeholder-val="{{ false }}">
+  <div style="{{ introStyle }}">
+    <sc-if value="{{ isGate }}" hint-placeholder-val="{{ true }}">
+      <div style="{{ gateStyle }}">
+        <div style="display:flex;align-items:center;gap:20px">
+          <div style="width:60px;height:60px;border-radius:50%;border:2px solid #c9c3ba;display:flex;align-items:center;justify-content:center"><div style="width:44px;height:44px;border-radius:50%;border:1px solid #6f6962;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;color:#ece8e2">K</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-weight:800;font-size:clamp(32px,4vw,44px);letter-spacing:.22em;line-height:1">KAHUE</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.9em;color:#9a938a">MUNIZ</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.28em">
+          <span style="color:#9a938a;padding-bottom:14px;border-bottom:1px solid #2a2622">KAHUE MUNIZ · APRESENTA</span>
+          <span style="color:#d8d2c9">[PORTFÓLIO / {{ ano }}]</span>
+          <span style="color:#9a938a;display:flex;align-items:center;gap:10px">DESIGN · CÓDIGO · VÍDEO · FOTO <span style="width:0;height:0;border-left:8px solid #2e8bff;border-top:5px solid transparent;border-bottom:5px solid transparent"></span></span>
+        </div>
+        <button onClick="{{ enter }}" style="display:flex;align-items:center;gap:16px;background:transparent;border:0;padding:8px 0;cursor:pointer;color:#ece8e2;font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:500;letter-spacing:.24em;align-self:flex-start" style-hover="color:#2e8bff">
+          <span style="width:92px;height:1px;background:#6f6962"></span>
+          <span style="display:flex;gap:3px"><span style="width:7px;height:13px;background:#9a938a"></span><span style="width:7px;height:13px;background:#9a938a"></span><span style="width:7px;height:13px;background:#2e8bff"></span></span>
+          ENTRAR NO PORTFÓLIO
+        </button>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.24em;color:#5f5952">COPYRIGHT {{ ano }} · CRIADO POR KAHUE MUNIZ</span>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+      <div style="{{ loadStyle }}">
+        <div style="position:relative;width:132px;height:132px">
+          {{ ring }}
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:2px"><span style="font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:500;color:#ece8e2">{{ pct }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#9a938a;margin-top:8px">%</span></div>
+        </div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.34em;color:#2e8bff">KM.CARREGANDO.PORTFÓLIO</span>
+        <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:650px;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.12em">
+          <sc-for list="{{ logs }}" as="l" hint-placeholder-count="4">
+            <div style="{{ l.style }}">
+              <span style="display:flex;gap:12px;min-width:0"><b style="color:#2e8bff;font-weight:700">{{ l.tag }}</b><span style="color:#6f6962">{{ l.item }}</span></span>
+              <span style="color:#9a938a">{{ l.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</sc-if>
+
+<div style="position:fixed;top:0;left:0;height:2px;z-index:40;background:#2e8bff;width:{{ scrollPctW }}"></div>
+<div style="position:fixed;right:clamp(16px,3vw,32px);bottom:24px;z-index:30;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;color:#9a938a;background:rgba(20,18,16,.8);padding:8px 12px;border:1px solid #2a2622">ROLAGEM <span style="color:#ece8e2">{{ scrollPct }}</span></div>
+
+<header style="position:sticky;top:0;z-index:20;background:rgba(20,18,16,.88);backdrop-filter:blur(10px);border-bottom:1px solid #2a2622">
+  <div style="max-width:1320px;margin:0 auto;padding:16px clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+    <a href="#topo" style="font-weight:900;font-size:18px;letter-spacing:-.02em">KAHUE<span style="color:#2e8bff">/</span>MUNIZ</a>
+    <nav style="display:flex;gap:clamp(14px,2.2vw,28px);flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em">
+      <a data-scramble="1" href="#perfil">PERFIL</a>
+      <a data-scramble="1" href="#projetos">PROJETOS</a>
+      <a data-scramble="1" href="#reels">REELS</a>
+      <a data-scramble="1" href="#branding">BRANDING</a>
+      <a data-scramble="1" href="#web">DESENVOLVIMENTO WEB</a>
+      <a data-scramble="1" href="#equipamentos">EQUIPAMENTOS</a>
+      <a data-scramble="1" href="#contato" style="color:#2e8bff">VAMOS CONVERSAR</a>
+    </nav>
+  </div>
+</header>
+
+<section id="topo" style="max-width:1320px;margin:0 auto;padding:clamp(64px,10vw,140px) clamp(20px,4vw,48px) clamp(56px,8vw,110px);display:flex;flex-direction:column;gap:40px">
+  <div style="display:flex;gap:20px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;color:#9a938a">
+    <sc-if value="{{ disponivel }}" hint-placeholder-val="{{ true }}">
+      <span style="display:flex;align-items:center;gap:8px;color:#ece8e2"><span style="width:8px;height:8px;border-radius:50%;background:#7ed99a"></span>DISPONÍVEL PARA PROJETOS</span>
+    </sc-if>
+    <span>FAZ-TUDO DO DESIGN</span>
+  </div>
+  <h1 style="margin:0;font-weight:900;font-size:clamp(52px,10.5vw,168px);line-height:.88;letter-spacing:-.045em;text-transform:uppercase"><span style="display:block;overflow:hidden;padding-bottom:.04em"><span data-reveal="up" data-delay="0" style="display:block">Designer</span></span><span style="display:block;overflow:hidden;padding-bottom:.04em"><span data-reveal="up" data-delay="120" style="display:block">visual <span style="color:#2e8bff">&amp;</span></span></span><span style="display:block;overflow:hidden;padding-bottom:.04em"><span data-reveal="up" data-delay="240" style="display:block">digital</span></span></h1>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:40px;align-items:end">
+    <p data-reveal="fade" data-delay="400" style="margin:0;font-size:clamp(17px,1.5vw,21px);line-height:1.5;color:#c9c3ba;max-width:560px;text-wrap:pretty">Anos de experiência em web, UI/UX, e-mail marketing, vídeo e fotografia — hoje criando e publicando projetos web reais com um fluxo de desenvolvimento assistido por IA. Eu não só entrego o layout: eu desenho, desenvolvo e coloco no ar.</p>
+    <div data-reveal="fade" data-delay="550" style="display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;color:#9a938a">
+      <span>KAHUE MUNIZ / [CIDADE], BRASIL / DESDE [ANO]</span>
+      <a href="#perfil" style="color:#2e8bff">↓ ROLE PARA VER MAIS</a>
+    </div>
+  </div>
+</section>
+
+<div style="border-top:1px solid #2a2622;overflow:hidden;padding:22px 0">{{ marquee }}</div>
+
+<section id="perfil" style="border-top:1px solid #2a2622">
+  <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,110px) clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;align-items:baseline;gap:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#2e8bff">01</span><h2 data-reveal="fade" style="margin:0;font-weight:900;font-size:clamp(36px,5vw,72px);letter-spacing:-.035em;text-transform:uppercase">Perfil</h2></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(32px,5vw,72px)">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div data-reveal="clip" style="aspect-ratio:4/5;position:relative;max-width:520px;width:100%">
+          <img src="perfil/kahue.jpg" alt="Kahue Muniz" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;filter:grayscale(1);transition:filter .6s" style-hover="filter:grayscale(0)">
+        </div>
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;color:#9a938a;max-width:520px"><span>KAHUE MUNIZ</span><span>[CIDADE], BRASIL</span></div>
+      </div>
+      <div data-reveal="fade" data-delay="150" style="display:flex;flex-direction:column;gap:28px;justify-content:center">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;color:#9a938a">SOBRE MIM</span>
+        <p style="margin:0;font-size:clamp(20px,1.9vw,26px);line-height:1.4;font-weight:500;text-wrap:pretty">Designer visual e digital baseado em [cidade], atuando em web design, design de interfaces, e-mail marketing, vídeo e fotografia — todos os pontos de contato de uma marca.</p>
+        <p style="margin:0;font-size:17px;line-height:1.6;color:#c9c3ba;text-wrap:pretty">Atualmente na [Empresa atual], cuidando de [principais responsabilidades]. Antes disso, trabalhei com design e front-end em [Empresa], [Empresa] e [Empresa].</p>
+        <p style="margin:0;font-size:15px;color:#9a938a">[Formação] — [Instituição], [ano]</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;padding-top:8px">
+          <a data-magnet="1" href="https://wa.me/55XXXXXXXXXXX" target="_blank" style="display:flex;flex-direction:column;gap:4px;padding:16px 22px;background:#2e8bff;color:#141210;min-width:200px" style-hover="background:#5ca6ff;color:#141210"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em">CONTATO</span><span style="font-weight:800;font-size:17px">WhatsApp ↗</span></a>
+          <a data-magnet="1" href="#projetos" style="display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1px solid #3a352f;min-width:200px" style-hover="border-color:#2e8bff"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">PORTFÓLIO</span><span style="font-weight:800;font-size:17px">Ver projetos ↓</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projetos" style="border-top:1px solid #2a2622">
+  <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,110px) clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:baseline;gap:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#2e8bff">02</span><h2 data-reveal="fade" style="margin:0;font-weight:900;font-size:clamp(36px,5vw,72px);letter-spacing:-.035em;text-transform:uppercase">Projetos</h2></div>
+        <p style="margin:0;font-size:17px;color:#9a938a">Coisas que eu desenhei, desenvolvi e coloquei no ar.</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:13px">
+        <button onClick="{{ prev }}" style="width:44px;height:44px;border:1px solid #3a352f;background:transparent;color:#ece8e2;cursor:pointer;font-size:16px" style-hover="border-color:#2e8bff">←</button>
+        <span style="min-width:72px;text-align:center"><b style="color:#2e8bff">{{ projNum }}</b> / {{ projTotal }}</span>
+        <button onClick="{{ next }}" style="width:44px;height:44px;border:1px solid #3a352f;background:transparent;color:#ece8e2;cursor:pointer;font-size:16px" style-hover="border-color:#2e8bff">→</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <sc-for list="{{ projetos }}" as="p" hint-placeholder-count="5">
+        <button onClick="{{ p.select }}" style="{{ p.tabStyle }}">{{ p.num }} · {{ p.titulo }}</button>
+      </sc-for>
+    </div>
+    <div data-reveal="fade" onMouseEnter="{{ panelIn }}" onMouseLeave="{{ panelOut }}" style="border:1px solid #2f2a25;background:#181512;display:flex;flex-direction:column">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid #2a2622;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em">
+        <span style="display:flex;align-items:center;gap:10px;color:#c9c3ba"><span style="width:7px;height:7px;background:#2e8bff"></span><span>{{ projCode }}</span></span>
+        <span style="color:#2e8bff">PASSE O MOUSE NAS ETAPAS</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(20px,3vw,40px);padding:clamp(20px,3vw,36px)">
+        <div style="aspect-ratio:16/10;position:relative;width:100%;background:#1d1a17;border:1px solid #2a2622">
+          <sc-for list="{{ projetos }}" as="p" hint-placeholder-count="1">
+            <div style="{{ p.slotStyle }}"><image-slot id="{{ p.slotId }}" shape="rect" placeholder="{{ p.placeholder }}"></image-slot></div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;color:#9a938a;padding-bottom:4px">PROCESSO</span>
+          <sc-for list="{{ etapas }}" as="s" hint-placeholder-count="5">
+            <div onMouseEnter="{{ s.hover }}" style="{{ s.boxStyle }}">
+              <span style="{{ s.numStyle }}">{{ s.num }}</span>
+              <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em">{{ s.nome }}</span>
+                <div style="display:flex;flex-direction:column;gap:5px">
+                  <div style="{{ s.bar1 }}"></div>
+                  <div style="{{ s.bar2 }}"></div>
+                </div>
+              </div>
+              <span style="{{ s.tagStyle }}">{{ s.flag }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));border-top:1px solid #2a2622">
+        <div style="display:flex;flex-direction:column;gap:18px;padding:clamp(20px,3vw,36px)">
+          <span style="font-weight:900;font-size:clamp(26px,3vw,40px);line-height:1;letter-spacing:-.03em;text-transform:uppercase">{{ projTitulo }}</span>
+          <div style="display:flex;gap:6px">
+            <sc-for list="{{ etapas }}" as="s" hint-placeholder-count="5">
+              <div style="{{ s.dash }}"></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <sc-for list="{{ projTags }}" as="t" hint-placeholder-count="3">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;color:#c9c3ba;border:1px solid #3a352f;padding:6px 9px">{{ t }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;padding:clamp(20px,3vw,36px);background:#141b25;border-left:2px solid #2e8bff">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em;color:#2e8bff">ETAPA {{ stepNum }} / {{ stepTotal }} · {{ stepNome }}</span>
+          <div style="height:2px;background:#2f2a25;overflow:hidden">{{ stepProgress }}</div>
+          <p style="margin:0;font-size:clamp(16px,1.3vw,19px);line-height:1.6;color:#d8d2c9;text-wrap:pretty">{{ stepTexto }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reels" style="border-top:1px solid #2a2622">
+  <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,110px) clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:baseline;gap:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#2e8bff">03</span><h2 data-reveal="fade" style="margin:0;font-weight:900;font-size:clamp(36px,5vw,72px);letter-spacing:-.035em;text-transform:uppercase">Reels</h2></div>
+        <p style="margin:0;font-size:17px;color:#9a938a">Vídeos curtos que eu filmei, editei e publiquei.</p>
+      </div>
+      <a href="#" style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;color:#2e8bff">VER TODOS NO INSTAGRAM ↗</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:16px">
+      <sc-for list="{{ reels }}" as="r" hint-placeholder-count="4">
+        <div data-reveal="fade" data-stagger="1" style="display:flex;flex-direction:column;gap:12px">
+          <div data-tilt="1" data-cursor="{{ r.cursor }}" onMouseEnter="{{ r.enter }}" onMouseLeave="{{ r.leave }}" onClick="{{ r.click }}" style="aspect-ratio:9/16;position:relative;width:100%;background:#1d1a17;overflow:hidden;cursor:pointer">
+            <video data-src="{{ r.src }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="metadata" onLoadedMetadata="{{ r.meta }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></video>
+            <div style="position:absolute;top:12px;left:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#ece8e2;background:rgba(20,18,16,.8);padding:5px 8px;pointer-events:none">▶ {{ r.duracao }}</div>
+            <div style="position:absolute;bottom:12px;right:12px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:#ece8e2;background:rgba(20,18,16,.8);padding:5px 8px;pointer-events:none">{{ r.somLabel }}</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline">
+            <span style="font-weight:800;font-size:18px;letter-spacing:-.01em">{{ r.titulo }}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;color:#9a938a">{{ r.num }}</span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="branding" style="border-top:1px solid #2a2622">
+  <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,110px) clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:baseline;gap:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#2e8bff">04</span><h2 data-reveal="fade" style="margin:0;font-weight:900;font-size:clamp(36px,5vw,72px);letter-spacing:-.035em;text-transform:uppercase">Branding</h2></div>
+      <p style="margin:0;font-size:17px;color:#9a938a">Identidades visuais criadas do conceito à aplicação.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px">
+      <sc-for list="{{ brands }}" as="b" hint-placeholder-count="3">
+        <div data-reveal="fade" data-stagger="1" style="display:flex;flex-direction:column;gap:16px">
+          <div data-tilt="1" data-cursor="ABRIR" onClick="{{ b.open }}" style="aspect-ratio:4/5;position:relative;width:100%;background:#1d1a17;border:1px solid #2a2622;cursor:pointer">
+            <div style="position:absolute;inset:0;overflow:hidden"><div role="img" aria-label="{{ b.titulo }}" style="{{ b.coverStyle }}" style-hover="transform:scale(1.05)"></div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <span style="font-weight:800;font-size:clamp(20px,2vw,26px);letter-spacing:-.02em;text-transform:uppercase">{{ b.titulo }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">{{ b.tags }}</span>
+            </div>
+            <button onClick="{{ b.open }}" style="flex-shrink:0;padding:10px 14px;background:transparent;border:1px solid #3a352f;color:#ece8e2;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;cursor:pointer;white-space:nowrap" style-hover="border-color:#2e8bff;color:#2e8bff">VER CASE →</button>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<sc-if value="{{ caseOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:150;background:rgba(14,12,11,.97);overflow-y:auto;animation:km-in .4s ease-out">
+    <div style="max-width:1100px;margin:0 auto;padding:clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;position:sticky;top:0;padding:12px 0;background:rgba(14,12,11,.95);z-index:2;border-bottom:1px solid #2a2622">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#2e8bff">BRANDING · {{ caseNum }} / 03</span>
+        <div style="display:flex;gap:8px">
+          <button onClick="{{ casePrev }}" style="width:44px;height:44px;border:1px solid #3a352f;background:transparent;color:#ece8e2;cursor:pointer" style-hover="border-color:#2e8bff">←</button>
+          <button onClick="{{ caseNext }}" style="width:44px;height:44px;border:1px solid #3a352f;background:transparent;color:#ece8e2;cursor:pointer" style-hover="border-color:#2e8bff">→</button>
+          <button onClick="{{ caseClose }}" style="height:44px;padding:0 16px;border:1px solid #2e8bff;background:#2e8bff;color:#141210;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;cursor:pointer">FECHAR ✕</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;color:#9a938a">{{ caseTags }}</span>
+        <h3 style="margin:0;font-weight:900;font-size:clamp(40px,7vw,96px);line-height:.9;letter-spacing:-.04em;text-transform:uppercase">{{ caseTitulo }}</h3>
+        <p style="margin:0;font-size:18px;line-height:1.6;color:#c9c3ba;max-width:640px;text-wrap:pretty">{{ caseDesc }}</p>
+      </div>
+      <div style="display:flex;justify-content:center;background:#1d1a17;border:1px solid #2a2622">
+        <sc-if value="{{ isOakley }}" hint-placeholder-val="{{ false }}"><img src="branding/oakley-japan.png" alt="Oakley Japan" style="width:100%;max-width:900px;height:auto;display:block"></sc-if>
+        <sc-if value="{{ isRunaway }}" hint-placeholder-val="{{ false }}"><img src="branding/runaway.png" alt="Runaway" style="width:100%;max-width:900px;height:auto;display:block"></sc-if>
+        <sc-if value="{{ isJungle }}" hint-placeholder-val="{{ false }}"><img src="branding/jungle-stone.png" alt="Jungle Stone Shop" style="width:100%;max-width:900px;height:auto;display:block"></sc-if>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<section id="web" style="border-top:1px solid #2a2622">
+  <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,110px) clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:baseline;gap:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#2e8bff">05</span><h2 data-reveal="fade" style="margin:0;font-weight:900;font-size:clamp(36px,5vw,72px);letter-spacing:-.035em;text-transform:uppercase">Desenvolvimento Web</h2></div>
+        <p style="margin:0;font-size:17px;color:#9a938a">Front end e Back end</p>
+      </div>
+      <a data-magnet="1" href="https://kahuesouza.github.io/cvdentus-site/CVDentus.dc.html" target="_blank" rel="noopener" style="padding:16px 22px;background:#2e8bff;color:#141210;font-weight:800;font-size:16px;white-space:nowrap" style-hover="background:#5ca6ff;color:#141210">Visitar site ↗</a>
+    </div>
+    <div data-reveal="fade" style="display:flex;flex-direction:column;gap:16px">
+      <a href="https://kahuesouza.github.io/cvdentus-site/CVDentus.dc.html" target="_blank" rel="noopener" data-cursor="ROLAR" style="border:1px solid #2f2a25;background:#1a1714;display:flex;flex-direction:column;transition:border-color .3s;color:#ece8e2" style-hover="border-color:#2e8bff;color:#ece8e2">
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #2a2622">
+          <div style="display:flex;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#3a352f"></span><span style="width:10px;height:10px;border-radius:50%;background:#3a352f"></span><span style="width:10px;height:10px;border-radius:50%;background:#2e8bff"></span></div>
+          <span style="flex:1;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;color:#9a938a;background:#141210;padding:6px 12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">kahuesouza.github.io/cvdentus-site</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;color:#2e8bff">AO VIVO ●</span>
+        </div>
+        <div style="aspect-ratio:16/9;position:relative;overflow:hidden;background:#1d1a17;container-type:size">
+          <img src="web/cvdentus-full.png?v=2" alt="Site CVDentus — página inteira" style="position:absolute;left:0;top:0;width:100%;height:auto;display:block;transition:transform 7s cubic-bezier(.4,0,.2,1)" style-hover="transform:translateY(calc(-100% + 100cqh))">
+        </div>
+      </a>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-weight:800;font-size:clamp(22px,2.4vw,30px);letter-spacing:-.02em;text-transform:uppercase">CVDentus</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">SITE INSTITUCIONAL · FRONT END · BACK END</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:16px">
+      <div data-reveal="fade" data-stagger="1" style="display:flex;flex-direction:column;gap:10px">
+        <div data-tilt="1" data-cursor="VER" style="aspect-ratio:3/2;position:relative;width:100%;overflow:hidden;background:#1d1a17;border:1px solid #2a2622"><img src="web/cvdentus-home.png" alt="CVDentus — home desktop" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block"></div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">HOME · DESKTOP</span>
+      </div>
+      <div data-reveal="fade" data-stagger="1" style="display:flex;flex-direction:column;gap:10px">
+        <div data-tilt="1" data-cursor="VER" style="aspect-ratio:3/2;position:relative;width:100%;overflow:hidden;background:#1d1a17;border:1px solid #2a2622"><img src="web/cvdentus-mobile.png" alt="CVDentus — versão mobile" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block"></div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">RESPONSIVO · MOBILE</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="equipamentos" style="border-top:1px solid #2a2622">
+  <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,110px) clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:48px">
+    <div style="display:flex;align-items:baseline;gap:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#2e8bff">06</span><h2 data-reveal="fade" style="margin:0;font-weight:900;font-size:clamp(36px,5vw,72px);letter-spacing:-.035em;text-transform:uppercase;white-space:nowrap">Equipamentos</h2><div style="flex:1;height:1px;background:#2a2622;align-self:center;min-width:24px"></div></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:16px">
+      <sc-for list="{{ ferramentas }}" as="f" hint-placeholder-count="12">
+        <div data-reveal="fade" data-stagger="1" style="display:flex;flex-direction:column;gap:14px;padding:22px 20px;background:#1a1714;border:1px solid #2f2a25;transition:border-color .3s, background .3s, transform .3s" style-hover="border-color:#2e8bff;background:#151c26;transform:translateY(-4px)">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.24em;color:#2e8bff">{{ f.cat }}</span>
+          <span style="font-weight:800;font-size:19px;letter-spacing:.02em;text-transform:uppercase">{{ f.nome }}</span>
+          <div style="height:3px;background:#2f2a25"><div style="{{ f.bar }}"></div></div>
+          <span style="font-size:15px;line-height:1.55;color:#a8a198;text-wrap:pretty">{{ f.desc }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="contato" style="border-top:1px solid #2a2622;background:#2e8bff;color:#141210">
+  <div style="max-width:1320px;margin:0 auto;padding:clamp(64px,10vw,140px) clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:40px">
+    <div style="display:flex;align-items:baseline;gap:20px;font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.1em"><span>07</span><span>VAMOS CONVERSAR</span></div>
+    <h2 data-reveal="fade" style="margin:0;font-weight:900;font-size:clamp(48px,9vw,140px);line-height:.9;letter-spacing:-.045em;text-transform:uppercase">Vamos criar<br>algo juntos.</h2>
+    <p style="margin:0;font-size:clamp(18px,1.6vw,22px);line-height:1.5;max-width:620px;text-wrap:pretty">Agora que você me conhece melhor, me conte se tem interesse em trabalhar comigo.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a data-magnet="1" href="mailto:comunicacao.kahue@gmail.com" style="padding:18px 26px;background:#141210;color:#ece8e2;font-weight:800;font-size:18px" style-hover="background:#2a2622;color:#ece8e2">comunicacao.kahue@gmail.com ↗</a>
+      <a data-magnet="1" href="#" style="padding:18px 26px;border:1.5px solid #141210;color:#141210;font-weight:800;font-size:18px" style-hover="background:#141210;color:#ece8e2">WhatsApp ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer style="background:#141210">
+  <div style="max-width:1320px;margin:0 auto;padding:56px clamp(20px,4vw,48px) 32px;display:flex;flex-direction:column;gap:48px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:32px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-weight:900;font-size:22px;letter-spacing:-.02em">KAHUE<span style="color:#2e8bff">/</span>MUNIZ</span>
+        <span style="font-size:15px;color:#9a938a">Designer Visual &amp; Digital<br>[Cidade], Brasil</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:15px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">SITE</span>
+        <a data-scramble="1" href="#perfil">Perfil</a><a href="#projetos">Projetos</a><a href="#reels">Reels</a><a href="#branding">Branding</a><a href="#web">Desenvolvimento Web</a><a href="#equipamentos">Equipamentos</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:15px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">REDES</span>
+        <a href="#">LinkedIn</a><a href="#">Instagram</a><a href="#">Behance</a><a href="mailto:comunicacao.kahue@gmail.com">E-mail</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:15px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">ARQUIVOS</span>
+        <a href="#">Currículo · PDF</a>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:24px;border-top:1px solid #2a2622;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">
+      <span>© {{ ano }} KAHUE MUNIZ</span>
+      <span>BRASÍLIA · {{ hora }}</span>
+    </div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;disponivel&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Conteúdo&quot;},&quot;intro&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Animação&quot;}}">
+class Component extends DCLogic {
+  state = { sel: 0, hora: '' };
+  projetos = [
+    { titulo: 'Nome do projeto', tags: 'WEB · UI/UX · DESENVOLVIMENTO', desc: 'Breve descrição do projeto: o desafio, o que você fez e o resultado.' },
+    { titulo: 'Nome do projeto', tags: 'E-MAIL MARKETING · LANDING PAGE', desc: 'Breve descrição do projeto: o desafio, o que você fez e o resultado.' },
+    { titulo: 'Nome do projeto', tags: 'APP WEB · IA', desc: 'Breve descrição do projeto: o desafio, o que você fez e o resultado.' },
+    { titulo: 'Nome do projeto', tags: 'IDENTIDADE VISUAL · WEB', desc: 'Breve descrição do projeto: o desafio, o que você fez e o resultado.' },
+    { titulo: 'Nome do projeto', tags: 'VÍDEO · FOTOGRAFIA', desc: 'Breve descrição do projeto: o desafio, o que você fez e o resultado.' },
+  ];
+  etapasBase = [
+    { nome: 'BRIEFING', texto: 'Conversa inicial com o cliente: objetivo, público, prazo e o que define sucesso. Tudo registrado antes de abrir qualquer ferramenta.' },
+    { nome: 'PESQUISA', texto: 'Referências, concorrentes e conteúdo existente. Aqui eu descubro o que já funciona e onde está a oportunidade.' },
+    { nome: 'DESIGN', texto: 'Layout, tipografia e componentes. Protótipo navegável para o cliente aprovar antes de partir para o código.' },
+    { nome: 'DESENVOLVIMENTO', texto: 'Eu mesmo transformo o design em produto, com fluxo assistido por IA. Sem perda entre o que foi aprovado e o que vai ao ar.' },
+    { nome: 'ENTREGA', texto: 'Publicação, testes em dispositivos reais e ajustes finais. O projeto sai do papel e começa a gerar resultado.' },
+  ];
+  step = 0;
+  componentDidMount() {
+    this.tick();
+    this.t = setInterval(() => this.tick(), 1000);
+    this.auto = setInterval(() => {
+      if (this.state.panelHover) return;
+      const n = this.etapasBase.length, st = this.state.step || 0;
+      if (st + 1 >= n) this.setState({ step: 0, sel: (this.state.sel + 1) % this.projetos.length });
+      else this.setState({ step: st + 1 });
+    }, 3600);
+    this.onScroll = () => {
+      const h = document.documentElement.scrollHeight - innerHeight;
+      this.setState({ scroll: h > 0 ? Math.min(100, Math.round(scrollY / h * 100)) : 0 });
+    };
+    addEventListener('scroll', this.onScroll, { passive: true });
+    this.prepReveal();
+    this.setupHover();
+    this.durPoll = setInterval(() => {
+      const vs = document.querySelectorAll('#reels video'), durs = { ...(this.state.durs || {}) };
+      vs.forEach(v => { const s = v.dataset.src; if (s && !s.includes('{{') && v.getAttribute('src') !== s) v.setAttribute('src', s); });
+      let ch = false, all = vs.length > 0;
+      vs.forEach((v, i) => { if (v.readyState >= 1 && isFinite(v.duration)) { if (durs[i] !== v.duration) { durs[i] = v.duration; ch = true; } } else all = false; });
+      if (ch) this.setState({ durs });
+      if (all) clearInterval(this.durPoll);
+    }, 500);
+    if (this.props.intro ?? true) {
+      document.body.style.overflow = 'hidden';
+      this.setState({ intro: 'gate' });
+    } else {
+      this.setState({ intro: 'gone' });
+      this.startReveal();
+    }
+  }
+  componentWillUnmount() {
+    clearInterval(this.t); clearInterval(this.auto); clearInterval(this.durPoll); cancelAnimationFrame(this.raf);
+    removeEventListener('scroll', this.onScroll);
+    this.io && this.io.disconnect();
+    this.mo && this.mo.disconnect();
+    cancelAnimationFrame(this._cl);
+    (this._cur || []).forEach(d => d.remove());
+    removeEventListener('mousemove', this._mm);
+    document.removeEventListener('mouseover', this._mo);
+    document.removeEventListener('mouseout', this._mout);
+    document.removeEventListener('mouseleave', this._ml);
+    document.removeEventListener('mouseenter', this._me);
+    document.documentElement.classList.remove('km-anim');
+    document.body.style.overflow = '';
+  }
+  panelVals(sel, pad) {
+    const p = this.projetos[sel], st = this.state.step || 0, E = this.etapasBase, A = '#2e8bff';
+    const ease = 'cubic-bezier(.2,.7,.1,1)';
+    return {
+      projCode: 'PRJ.0' + pad(sel) + ' · ' + p.tags.split(' · ')[0],
+      projTitulo: p.titulo,
+      projTags: p.tags.split(' · '),
+      stepNum: pad(st), stepTotal: pad(E.length - 1), stepNome: E[st].nome, stepTexto: E[st].texto,
+      stepProgress: React.createElement('div', { key: sel + '-' + st + '-' + (this.state.panelHover ? 'h' : 'a'), style: { height: '100%', background: A, width: this.state.panelHover ? '100%' : 0, animation: this.state.panelHover ? 'none' : 'km-fill 3.6s linear forwards' } }),
+      panelIn: () => this.setState({ panelHover: true }),
+      panelOut: () => this.setState({ panelHover: false }),
+      etapas: E.map((e, i) => {
+        const on = i === st, done = i < st;
+        return {
+          num: pad(i), nome: e.nome, flag: on ? 'AGORA' : done ? '✓' : '',
+          hover: () => this.setState({ step: i }),
+          boxStyle: { display: 'flex', alignItems: 'center', gap: 16, padding: '12px 16px', border: '1px solid ' + (on ? A : '#2f2a25'), background: on ? '#15202e' : '#1b1815', color: on ? '#ece8e2' : done ? '#c9c3ba' : '#7d766e', boxShadow: on ? '0 0 0 1px rgba(46,139,255,.35), 0 10px 40px rgba(46,139,255,.18)' : 'none', transform: on ? 'translateX(10px)' : 'none', transition: `all .45s ${ease}`, cursor: 'default' },
+          numStyle: { fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: on || done ? A : '#5f5952', width: 22 },
+          bar1: { height: 4, borderRadius: 2, background: on ? A : done ? '#2c4a70' : '#2f2a25', width: on ? '78%' : '55%', transition: `all .6s ${ease}` },
+          bar2: { height: 4, borderRadius: 2, background: on ? 'rgba(46,139,255,.45)' : '#2a2622', width: on ? '52%' : '35%', transition: `all .6s ${ease} .08s` },
+          tagStyle: { fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, letterSpacing: '.12em', color: on ? '#141210' : A, background: on ? A : 'transparent', padding: on ? '4px 8px' : 0, borderRadius: 999, transition: 'all .3s' },
+          dash: { height: 3, width: on ? 28 : 16, background: on ? A : done ? '#335782' : '#3a352f', transition: `all .4s ${ease}` },
+        };
+      }),
+    };
+  }
+  brandsBase = [
+    { slug: 'oakley', img: 'branding/oakley-japan.png', titulo: 'Oakley Japan', tags: 'IDENTIDADE VISUAL · ISOLOGO · BUSINESS CARD', desc: 'Isologo que une a bandeira do Japão, a caveira da Oakley e a onda, que simboliza força e vida. Tipografia Gang of Three e vermelho #C40000.' },
+    { slug: 'runaway', img: 'branding/runaway.png', titulo: 'Runaway', tags: 'IDENTIDADE VISUAL · ISOLOGO · STICKERS', desc: '"Fuja do convencional." Isologo com o corredor em movimento, tipografia Avenir Next LT Pro Bold e o Classic Blue #34558B, Pantone cor do ano 2020.' },
+    { slug: 'jungle-stone', img: 'branding/jungle-stone.png', titulo: 'Jungle Stone Shop', tags: 'IDENTIDADE VISUAL · IMAGOTIPO · STREETWEAR', desc: 'Natureza + pedra = Medusa, representando o "corre de rua" dentro da selva de pedra. Tipografia Nazare e paleta "jungle" em tons de verde e dourado.' },
+  ];
+  carBase = [
+    { titulo: 'Nome do carrossel', cliente: '@CLIENTE', tags: 'INSTAGRAM · CARROSSEL · 5 SLIDES' },
+    { titulo: 'Nome do carrossel', cliente: '@CLIENTE', tags: 'INSTAGRAM · CARROSSEL · 5 SLIDES' },
+    { titulo: 'Nome do carrossel', cliente: '@CLIENTE', tags: 'INSTAGRAM · CARROSSEL · 5 SLIDES' },
+  ];
+  carVals() {
+    const N = 5, idx = this.state.car || {};
+    const set = (ci, v) => this.setState(s => ({ car: { ...(s.car || {}), [ci]: Math.max(0, Math.min(N - 1, v)) } }));
+    const arrow = (side, on) => ({ position: 'absolute', top: '50%', [side]: 10, transform: 'translateY(-50%)', width: 40, height: 40, borderRadius: '50%', border: 0, background: 'rgba(20,18,16,.75)', color: '#ece8e2', fontSize: 15, cursor: 'pointer', opacity: on ? 1 : 0, pointerEvents: on ? 'auto' : 'none', transition: 'opacity .3s' });
+    return this.carBase.map((c, ci) => {
+      const i = idx[ci] || 0;
+      return {
+        ...c,
+        contador: String(i + 1).padStart(2, '0') + ' / ' + String(N).padStart(2, '0'),
+        trackStyle: { display: 'flex', height: '100%', transform: 'translateX(-' + i * 100 + '%)', transition: 'transform .6s cubic-bezier(.2,.7,.1,1)' },
+        slides: Array.from({ length: N }, (_, k) => ({ id: 'car-' + (ci + 1) + '-' + (k + 1), label: 'Slide ' + (k + 1) + ' (4:5)' })),
+        prev: () => set(ci, i - 1), next: () => set(ci, i + 1),
+        prevStyle: arrow('left', i > 0), nextStyle: arrow('right', i < N - 1),
+        dots: Array.from({ length: N }, (_, k) => ({ go: () => set(ci, k), style: { width: k === i ? 22 : 7, height: 7, borderRadius: 4, border: 0, padding: 0, background: k === i ? '#2e8bff' : '#3a352f', cursor: 'pointer', transition: 'all .3s' } })),
+      };
+    });
+  }
+  brandVals() {
+    const B = this.brandsBase, c = this.state.caseIdx, open = c != null, n = B.length;
+    const go = i => { this.setState({ caseIdx: i }); document.body.style.overflow = i == null ? '' : 'hidden'; };
+    const cur = open ? B[c] : B[0];
+    return {
+      brands: B.map((b, i) => ({ ...b, open: () => go(i), coverStyle: { width: '100%', height: '100%', backgroundImage: 'url(' + b.img + ')', backgroundSize: 'cover', backgroundPosition: 'top center', transition: 'transform 1.2s cubic-bezier(.2,.7,.1,1)' } })),
+      isOakley: open && cur.slug === 'oakley', isRunaway: open && cur.slug === 'runaway', isJungle: open && cur.slug === 'jungle-stone',
+      caseOpen: open,
+      caseNum: String((c ?? 0) + 1).padStart(2, '0'),
+      caseTitulo: cur.titulo, caseTags: cur.tags, caseDesc: cur.desc, caseImg: cur.img,
+      caseImgs: [1, 2, 3, 4, 5].map(k => ({ id: 'brand-' + cur.slug + '-' + k, label: 'Imagem ' + k + ' · ' + cur.titulo })),
+      caseClose: () => go(null),
+      casePrev: () => go(((c ?? 0) - 1 + n) % n),
+      caseNext: () => go(((c ?? 0) + 1) % n),
+    };
+  }
+  setupHover() {
+    if (!matchMedia('(pointer:fine)').matches) return;
+    const mk = css => { const d = document.createElement('div'); d.style.cssText = css; document.body.appendChild(d); return d; };
+    const dot = mk('position:fixed;top:0;left:0;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:#2e8bff;pointer-events:none;z-index:200');
+    const ring = mk("position:fixed;top:0;left:0;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;border:1px solid rgba(236,232,226,.5);pointer-events:none;z-index:199;display:flex;align-items:center;justify-content:center;font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#141210;transition:width .3s,height .3s,margin .3s,background .3s,border-color .3s");
+    this._cur = [dot, ring];
+    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+    const loop = () => {
+      rx += (mx - rx) * .18; ry += (my - ry) * .18;
+      dot.style.transform = `translate(${mx}px,${my}px)`;
+      ring.style.transform = `translate(${rx}px,${ry}px)`;
+      this._cl = requestAnimationFrame(loop);
+    };
+    loop();
+    const setRing = mode => {
+      if (mode && mode !== 'link') {
+        Object.assign(ring.style, { width: '84px', height: '84px', margin: '-42px 0 0 -42px', background: '#2e8bff', borderColor: '#2e8bff' });
+        ring.textContent = mode;
+      } else if (mode === 'link') {
+        Object.assign(ring.style, { width: '56px', height: '56px', margin: '-28px 0 0 -28px', background: 'transparent', borderColor: '#2e8bff' });
+        ring.textContent = '';
+      } else {
+        Object.assign(ring.style, { width: '36px', height: '36px', margin: '-18px 0 0 -18px', background: 'transparent', borderColor: 'rgba(236,232,226,.5)' });
+        ring.textContent = '';
+      }
+    };
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#/*01';
+    const scramble = el => {
+      if (el._scr) return;
+      const tn = [...el.childNodes].find(n => n.nodeType === 3); if (!tn) return;
+      const orig = tn.nodeValue; let f = 0; el._scr = true;
+      const run = () => {
+        tn.nodeValue = orig.split('').map((c, i) => c === ' ' || i < f / 2 ? c : chars[Math.random() * chars.length | 0]).join('');
+        f++;
+        if (f / 2 <= orig.length) requestAnimationFrame(run); else { tn.nodeValue = orig; el._scr = false; }
+      };
+      run();
+    };
+    this._mm = e => {
+      mx = e.clientX; my = e.clientY;
+      const t = e.target.closest && e.target.closest('[data-tilt]');
+      if (t) {
+        const r = t.getBoundingClientRect(), px = (mx - r.left) / r.width - .5, py = (my - r.top) / r.height - .5;
+        t.style.transition = 'transform .15s ease-out, filter .5s';
+        t.style.transform = `perspective(900px) rotateY(${px * 8}deg) rotateX(${-py * 8}deg) scale(1.02)`;
+      }
+      const m = e.target.closest && e.target.closest('[data-magnet]');
+      if (m) {
+        const r = m.getBoundingClientRect();
+        m.style.transition = 'transform .2s ease-out';
+        m.style.transform = `translate(${(mx - r.left - r.width / 2) * .25}px,${(my - r.top - r.height / 2) * .35}px)`;
+      }
+    };
+    this._mo = e => {
+      const el = e.target.closest ? e.target : null; if (!el) return;
+      const c = el.closest('[data-cursor]'), a = el.closest('a,button');
+      setRing(c ? c.dataset.cursor : a ? 'link' : null);
+      const s = el.closest('[data-scramble]'); if (s) scramble(s);
+    };
+    this._mout = e => {
+      const from = e.target.closest && e.target.closest('[data-tilt],[data-magnet]');
+      if (from && !from.contains(e.relatedTarget)) {
+        from.style.transition = 'transform .6s cubic-bezier(.2,.7,.1,1), filter .5s';
+        from.style.transform = '';
+      }
+    };
+    this._ml = () => { dot.style.opacity = ring.style.opacity = '0'; };
+    this._me = () => { dot.style.opacity = ring.style.opacity = '1'; };
+    addEventListener('mousemove', this._mm);
+    document.addEventListener('mouseover', this._mo);
+    document.addEventListener('mouseout', this._mout);
+    document.addEventListener('mouseleave', this._ml);
+    document.addEventListener('mouseenter', this._me);
+  }
+  prepReveal() {
+    document.documentElement.classList.add('km-anim');
+  }
+  startReveal() {
+    this.io && this.io.disconnect();
+    this.io = new IntersectionObserver(entries => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        const el = en.target._kmEl || en.target;
+        let d = +(el.dataset.delay || 0);
+        if (el.dataset.stagger) d += [...el.parentElement.children].indexOf(el) % 4 * 90;
+        setTimeout(() => el.setAttribute('data-in', ''), d);
+        this.io.unobserve(en.target);
+      });
+    }, { threshold: 0.12 });
+    const scan = () => document.querySelectorAll('[data-reveal]:not([data-in])').forEach(el => {
+      const k = el.dataset.reveal;
+      const t = (k === 'up' || k === 'clip') ? el.parentElement : el;
+      if (t !== el) t._kmEl = el;
+      this.io.observe(t);
+    });
+    scan();
+    this.mo = new MutationObserver(scan);
+    this.mo.observe(document.body, { childList: true, subtree: true });
+  }
+  enter = () => {
+    if (this.state.intro !== 'gate') return;
+    this.setState({ intro: 'gateOut' });
+    setTimeout(() => {
+      this.setState({ intro: 'loading', pct: 0 });
+      const t0 = performance.now(), dur = 2600;
+      const step = now => {
+        const p = Math.min(1, (now - t0) / dur), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        this.setState({ pct: Math.round(e * 100) });
+        if (p < 1) this.raf = requestAnimationFrame(step);
+        else setTimeout(() => {
+          this.setState({ intro: 'leaving' });
+          document.body.style.overflow = '';
+          setTimeout(() => this.startReveal(), 350);
+          setTimeout(() => this.setState({ intro: 'gone' }), 1100);
+        }, 450);
+      };
+      this.raf = requestAnimationFrame(step);
+    }, 500);
+  };
+  marqueeEl() {
+    if (this._mq) return this._mq;
+    const words = ['WEB DESIGN', 'UI/UX', 'E-MAIL MARKETING', 'LANDING PAGES', 'VÍDEO', 'FOTOGRAFIA', 'DESENVOLVIMENTO'];
+    const row = k => React.createElement('div', { key: k, style: { display: 'flex', gap: 40, paddingRight: 40, flexShrink: 0 } },
+      words.flatMap((w, i) => [
+        React.createElement('span', { key: 'w' + i, style: { fontWeight: 900, fontSize: 'clamp(28px,3.4vw,48px)', letterSpacing: '-.03em', whiteSpace: 'nowrap' } }, w),
+        React.createElement('span', { key: 's' + i, style: { color: '#2e8bff', fontSize: 'clamp(20px,2.4vw,32px)', alignSelf: 'center' } }, '✦'),
+      ]));
+    this._mq = React.createElement('div', { style: { display: 'flex', width: 'max-content', animation: 'km-marquee 38s linear infinite' } }, row(1), row(2));
+    return this._mq;
+  }
+  tick() {
+    this.setState({ hora: new Date().toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' }) });
+  }
+  renderVals() {
+    const { sel } = this.state, n = this.projetos.length;
+    const pad = i => String(i + 1).padStart(2, '0');
+    const pct = this.state.pct || 0, intro = this.state.intro, ready = pct >= 100;
+    const sp = this.state.scroll || 0;
+    return {
+      marquee: this.marqueeEl(),
+      showIntro: intro !== 'gone',
+      isGate: intro === 'gate' || intro === 'gateOut' || intro === undefined,
+      isLoading: intro === 'loading' || intro === 'leaving',
+      gateStyle: { display: 'flex', flexDirection: 'column', gap: 'clamp(44px,8vh,80px)', width: '100%', maxWidth: 900, margin: '0 auto', padding: 'clamp(40px,8vh,64px) clamp(20px,4vw,48px)', opacity: intro === 'gateOut' ? 0 : 1, transform: intro === 'gateOut' ? 'translateY(-16px)' : 'none', transition: 'opacity .45s, transform .45s' },
+      loadStyle: { flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 36, padding: '40px clamp(20px,4vw,48px)', animation: 'km-in .6s ease-out' },
+      pct,
+      ring: (() => {
+        const r = 62, c = 2 * Math.PI * r;
+        return React.createElement('svg', { width: 132, height: 132, viewBox: '0 0 132 132', style: { position: 'absolute', inset: 0, transform: 'rotate(-90deg)', filter: 'drop-shadow(0 0 6px rgba(46,139,255,.5))' } },
+          React.createElement('circle', { cx: 66, cy: 66, r, fill: 'none', stroke: '#2f2a25', strokeWidth: 2 }),
+          React.createElement('circle', { cx: 66, cy: 66, r, fill: 'none', stroke: '#2e8bff', strokeWidth: 2.5, strokeDasharray: c, strokeDashoffset: c * (1 - pct / 100), strokeLinecap: 'round' }));
+      })(),
+      logs: [
+        ['INIT', 'portfolio.core', 'OK', 0],
+        ['LOAD', 'projetos.web', '05 ITENS', 22],
+        ['LOAD', 'reels.video', '04 ITENS', 46],
+        ['LOAD', 'branding.cases', '03 ITENS', 68],
+        ['CALIB', 'layout.responsivo', '1320 MAX', 86],
+      ].map(([tag, item, status, at]) => ({ tag, item, status: pct >= at + 10 ? status : '···', style: { display: 'flex', justifyContent: 'space-between', gap: 16, opacity: pct >= at ? 1 : 0, transform: pct >= at ? 'none' : 'translateY(6px)', transition: 'opacity .35s, transform .35s' } })),
+      introStyle: { position: 'fixed', inset: 0, zIndex: 100, background: 'radial-gradient(ellipse at 40% 20%, #221d19 0%, #141210 55%, #0e0c0b 100%)', color: '#ece8e2', display: 'flex', flexDirection: 'column', overflowY: 'auto', transform: intro === 'leaving' ? 'translateY(-100%)' : 'none', transition: 'transform 1s cubic-bezier(.8,0,.2,1)' },
+      enterStyle: { padding: '18px 28px', background: ready ? '#2e8bff' : 'transparent', color: ready ? '#141210' : '#6f6962', border: '1px solid ' + (ready ? '#2e8bff' : '#3a352f'), fontFamily: "'IBM Plex Mono',monospace", fontSize: 13, letterSpacing: '.12em', fontWeight: 500, whiteSpace: 'nowrap', cursor: ready ? 'pointer' : 'default', transition: 'all .4s' },
+      enter: this.enter,
+      scrollPct: String(sp).padStart(3, '0'),
+      scrollPctW: sp + '%',
+      disponivel: this.props.disponivel ?? true,
+      hora: this.state.hora || '--:--:--',
+      ano: new Date().getFullYear(),
+      projNum: pad(sel),
+      projTotal: pad(n - 1),
+      ...this.panelVals(sel, pad),
+      prev: () => this.setState({ sel: (sel - 1 + n) % n, step: 0 }),
+      next: () => this.setState({ sel: (sel + 1) % n, step: 0 }),
+      projetos: this.projetos.map((p, i) => ({
+        ...p,
+        num: pad(i),
+        slotId: 'projeto-' + (i + 1),
+        placeholder: 'Imagem do projeto ' + pad(i),
+        arrow: i === sel ? '●' : '',
+        select: () => this.setState({ sel: i, step: 0 }),
+        tabStyle: { padding: '10px 14px', background: i === sel ? '#2e8bff' : 'transparent', color: i === sel ? '#141210' : '#9a938a', border: '1px solid ' + (i === sel ? '#2e8bff' : '#3a352f'), fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, letterSpacing: '.1em', textTransform: 'uppercase', whiteSpace: 'nowrap', cursor: 'pointer', transition: 'all .3s' },
+        slotStyle: { position: 'absolute', inset: 0, opacity: i === sel ? 1 : 0, pointerEvents: i === sel ? 'auto' : 'none', transition: 'opacity .35s' },
+        rowStyle: { display: 'flex', alignItems: 'center', gap: 20, padding: '20px 0', background: 'transparent', border: 0, borderBottom: '1px solid #2a2622', color: i === sel ? '#ece8e2' : '#6f6962', cursor: 'pointer', fontFamily: 'inherit', width: '100%', transition: 'color .2s' },
+      })),
+      reels: [
+        ['reels/watch-film.mp4', 'Watch Film'],
+        ['reels/cvdentus-history.mp4', 'CVDentus History'],
+        ['reels/mes-do-cliente.mp4', 'Mês do Cliente CVDentus'],
+        ['reels/ja-e-possivel.mp4', 'Já é possível fazer assim'],
+      ].map(([src, titulo], i) => {
+        const d = (this.state.durs || {})[i], som = this.state.somOn === i;
+        const vid = e => e.currentTarget.querySelector('video');
+        return {
+          src: src + '#t=0.5', titulo, num: String(i + 1).padStart(2, '0'),
+          duracao: d ? Math.floor(d / 60) + ':' + String(Math.round(d % 60)).padStart(2, '0') : '--:--',
+          somLabel: som ? 'SOM ON' : 'CLIQUE P/ SOM',
+          cursor: som ? 'MUDO' : 'SOM',
+          meta: e => { const v = e.currentTarget.duration; this.setState(s => ({ durs: { ...(s.durs || {}), [i]: v } })); },
+          enter: e => { const v = vid(e); v && v.play().catch(() => {}); },
+          leave: e => { const v = vid(e); if (v) { v.pause(); v.muted = true; } if (this.state.somOn === i) this.setState({ somOn: null }); },
+          click: e => {
+            const v = vid(e); if (!v) return;
+            document.querySelectorAll('#reels video').forEach(o => { if (o !== v) { o.muted = true; o.pause(); } });
+            v.muted = som; if (!som) v.play().catch(() => {});
+            this.setState({ somOn: som ? null : i });
+          },
+        };
+      }),
+      experiencias: [
+        { empresa: '[Empresa atual]', cargo: '[Cargo]', periodo: '[ano] — atual' },
+        { empresa: '[Empresa]', cargo: '[Cargo]', periodo: '[ano] — [ano]' },
+        { empresa: '[Empresa]', cargo: '[Cargo]', periodo: '[ano] — [ano]' },
+        { empresa: '[Empresa]', cargo: '[Cargo]', periodo: '[ano] — [ano]' },
+        { empresa: '[Empresa]', cargo: '[Cargo]', periodo: '[ano] — [ano]' },
+      ],
+      ...this.brandVals(),
+      ferramentas: [
+        ['CÓDIGO', 'React / Next.js', 'Front-end em produção, desenvolvido com apoio de IA.', 80],
+        ['CÓDIGO', 'HTML / CSS', 'Layouts responsivos e e-mails feitos à mão.', 92],
+        ['ANÚNCIOS', 'Ads', 'Meta Ads, Google Ads e outras plataformas de anúncio.', 85],
+        ['WEB', 'WordPress', 'Temas e conteúdo para sites de clientes.', 78],
+        ['BUSCA', 'SEO', 'Otimização de sites e empresas no Google Meu Negócio.', 88],
+        ['INTERFACE', 'Adobe XD', 'Projetos web e mobile de longa data.', 82],
+        ['GRÁFICO', 'Photoshop', 'Tratamento de imagem, produto e composições.', 90],
+        ['GRÁFICO', 'Illustrator', 'Marcas, ícones e sistemas de layout.', 86],
+        ['VÍDEO', 'Premiere Pro', 'Edição e produção de vídeos institucionais e reels.', 88],
+        ['MOTION', 'After Effects', 'Animações para web e redes sociais.', 75],
+        ['COMUNICAÇÃO', 'E-mail marketing', 'Peças e layouts que funcionam até no Outlook.', 93],
+        ['IA', 'IA generativa', 'Claude, Midjourney e outras ferramentas no fluxo de trabalho.', 84],
+      ].map(([cat, nome, desc, n]) => ({ cat, nome, desc, bar: { height: '100%', width: n + '%', background: '#2e8bff' } })),
+      equipamentos: [
+        { grupo: 'DESIGN', itens: ['Figma', 'Photoshop', 'Illustrator', 'After Effects'] },
+        { grupo: 'DESENVOLVIMENTO', itens: ['HTML / CSS / JS', 'VS Code', 'Claude', 'GitHub'] },
+        { grupo: 'FOTOGRAFIA', itens: ['[Câmera]', '[Lente]', '[Lente]', 'Lightroom'] },
+        { grupo: 'VÍDEO', itens: ['[Câmera]', '[Microfone]', 'Premiere Pro', 'DaVinci Resolve'] },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
