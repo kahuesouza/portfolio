@@ -667,7 +667,7 @@ class Component extends DCLogic {
       logs: [
         ['INIT', 'portfolio.core', 'OK', 0],
         ['LOAD', 'projetos.web', '05 ITENS', 22],
-        ['LOAD', 'reels.video', '04 ITENS', 46],
+        ['LOAD', 'reels.video', '05 ITENS', 46],
         ['LOAD', 'branding.cases', '03 ITENS', 68],
         ['CALIB', 'layout.responsivo', '1320 MAX', 86],
       ].map(([tag, item, status, at]) => ({ tag, item, status: pct >= at + 10 ? status : '···', style: { display: 'flex', justifyContent: 'space-between', gap: 16, opacity: pct >= at ? 1 : 0, transform: pct >= at ? 'none' : 'translateY(6px)', transition: 'opacity .35s, transform .35s' } })),
@@ -700,6 +700,7 @@ class Component extends DCLogic {
         ['reels/cvdentus-history.mp4', 'CVDentus History'],
         ['reels/mes-do-cliente.mp4', 'Mês do Cliente CVDentus'],
         ['reels/ja-e-possivel.mp4', 'Já é possível fazer assim'],
+        ['reels/fabrio-tecnologia.mp4', 'Fábrica de Tecnologia'],
       ].map(([src, titulo], i) => {
         const d = (this.state.durs || {})[i], som = this.state.somOn === i;
         const vid = e => e.currentTarget.querySelector('video');
