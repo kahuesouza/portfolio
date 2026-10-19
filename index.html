@@ -84,7 +84,6 @@ html.km-anim [data-reveal="clip"]:not([data-in]){clip-path:inset(0 0 100% 0)}
     <nav style="display:flex;gap:clamp(14px,2.2vw,28px);flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em">
       <a data-scramble="1" href="#perfil">PERFIL</a>
       <a data-scramble="1" href="#cvdcloud">CVD CLOUD</a>
-      <a data-scramble="1" href="#projetos">PROJETOS</a>
       <a data-scramble="1" href="#reels">REELS</a>
       <a data-scramble="1" href="#branding">BRANDING</a>
       <a data-scramble="1" href="#web">DESENVOLVIMENTO WEB</a>
@@ -130,7 +129,7 @@ html.km-anim [data-reveal="clip"]:not([data-in]){clip-path:inset(0 0 100% 0)}
         <p style="margin:0;font-size:15px;color:#9a938a">[Formação] — [Instituição], [ano]</p>
         <div style="display:flex;gap:12px;flex-wrap:wrap;padding-top:8px">
           <a data-magnet="1" href="https://wa.me/55XXXXXXXXXXX" target="_blank" style="display:flex;flex-direction:column;gap:4px;padding:16px 22px;background:#2e8bff;color:#141210;min-width:200px" style-hover="background:#5ca6ff;color:#141210"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em">CONTATO</span><span style="font-weight:800;font-size:17px">WhatsApp ↗</span></a>
-          <a data-magnet="1" href="#projetos" style="display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1px solid #3a352f;min-width:200px" style-hover="border-color:#2e8bff"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">PORTFÓLIO</span><span style="font-weight:800;font-size:17px">Ver projetos ↓</span></a>
+          <a data-magnet="1" href="#cvdcloud" style="display:flex;flex-direction:column;gap:4px;padding:16px 22px;border:1px solid #3a352f;min-width:200px" style-hover="border-color:#2e8bff"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">PORTFÓLIO</span><span style="font-weight:800;font-size:17px">Ver projeto ↓</span></a>
         </div>
       </div>
     </div>
@@ -195,76 +194,6 @@ html.km-anim [data-reveal="clip"]:not([data-in]){clip-path:inset(0 0 100% 0)}
         <video class="km-cloud-video" src="apps/cvdcloud/cvdcloud-mobile.mp4" poster="apps/cvdcloud/poster-mobile.jpg" muted loop playsinline preload="metadata" style="width:100%;aspect-ratio:16/9;display:block;background:#000;object-fit:cover"></video>
       </div>
       <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">VERSÃO MOBILE</span>
-    </div>
-  </div>
-</section>
-
-<section id="projetos" style="border-top:1px solid #2a2622">
-  <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,110px) clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:48px">
-    <div style="display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap">
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div style="display:flex;align-items:baseline;gap:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#2e8bff">02</span><h2 data-reveal="fade" style="margin:0;font-weight:900;font-size:clamp(36px,5vw,72px);letter-spacing:-.035em;text-transform:uppercase">Projetos</h2></div>
-        <p style="margin:0;font-size:17px;color:#9a938a">Coisas que eu desenhei, desenvolvi e coloquei no ar.</p>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:13px">
-        <button onClick="{{ prev }}" style="width:44px;height:44px;border:1px solid #3a352f;background:transparent;color:#ece8e2;cursor:pointer;font-size:16px" style-hover="border-color:#2e8bff">←</button>
-        <span style="min-width:72px;text-align:center"><b style="color:#2e8bff">{{ projNum }}</b> / {{ projTotal }}</span>
-        <button onClick="{{ next }}" style="width:44px;height:44px;border:1px solid #3a352f;background:transparent;color:#ece8e2;cursor:pointer;font-size:16px" style-hover="border-color:#2e8bff">→</button>
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <sc-for list="{{ projetos }}" as="p" hint-placeholder-count="5">
-        <button onClick="{{ p.select }}" style="{{ p.tabStyle }}">{{ p.num }} · {{ p.titulo }}</button>
-      </sc-for>
-    </div>
-    <div data-reveal="fade" onMouseEnter="{{ panelIn }}" onMouseLeave="{{ panelOut }}" style="border:1px solid #2f2a25;background:#181512;display:flex;flex-direction:column">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid #2a2622;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em">
-        <span style="display:flex;align-items:center;gap:10px;color:#c9c3ba"><span style="width:7px;height:7px;background:#2e8bff"></span><span>{{ projCode }}</span></span>
-        <span style="color:#2e8bff">PASSE O MOUSE NAS ETAPAS</span>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:clamp(20px,3vw,40px);padding:clamp(20px,3vw,36px)">
-        <div style="aspect-ratio:16/10;position:relative;width:100%;background:#1d1a17;border:1px solid #2a2622">
-          <sc-for list="{{ projetos }}" as="p" hint-placeholder-count="1">
-            <div style="{{ p.slotStyle }}"><image-slot id="{{ p.slotId }}" shape="rect" placeholder="{{ p.placeholder }}"></image-slot></div>
-          </sc-for>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;color:#9a938a;padding-bottom:4px">PROCESSO</span>
-          <sc-for list="{{ etapas }}" as="s" hint-placeholder-count="5">
-            <div onMouseEnter="{{ s.hover }}" style="{{ s.boxStyle }}">
-              <span style="{{ s.numStyle }}">{{ s.num }}</span>
-              <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0">
-                <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em">{{ s.nome }}</span>
-                <div style="display:flex;flex-direction:column;gap:5px">
-                  <div style="{{ s.bar1 }}"></div>
-                  <div style="{{ s.bar2 }}"></div>
-                </div>
-              </div>
-              <span style="{{ s.tagStyle }}">{{ s.flag }}</span>
-            </div>
-          </sc-for>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));border-top:1px solid #2a2622">
-        <div style="display:flex;flex-direction:column;gap:18px;padding:clamp(20px,3vw,36px)">
-          <span style="font-weight:900;font-size:clamp(26px,3vw,40px);line-height:1;letter-spacing:-.03em;text-transform:uppercase">{{ projTitulo }}</span>
-          <div style="display:flex;gap:6px">
-            <sc-for list="{{ etapas }}" as="s" hint-placeholder-count="5">
-              <div style="{{ s.dash }}"></div>
-            </sc-for>
-          </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <sc-for list="{{ projTags }}" as="t" hint-placeholder-count="3">
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;color:#c9c3ba;border:1px solid #3a352f;padding:6px 9px">{{ t }}</span>
-            </sc-for>
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:14px;padding:clamp(20px,3vw,36px);background:#141b25;border-left:2px solid #2e8bff">
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.14em;color:#2e8bff">ETAPA {{ stepNum }} / {{ stepTotal }} · {{ stepNome }}</span>
-          <div style="height:2px;background:#2f2a25;overflow:hidden">{{ stepProgress }}</div>
-          <p style="margin:0;font-size:clamp(16px,1.3vw,19px);line-height:1.6;color:#d8d2c9;text-wrap:pretty">{{ stepTexto }}</p>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -423,7 +352,7 @@ html.km-anim [data-reveal="clip"]:not([data-in]){clip-path:inset(0 0 100% 0)}
       </div>
       <div style="display:flex;flex-direction:column;gap:10px;font-size:15px">
         <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">SITE</span>
-        <a data-scramble="1" href="#perfil">Perfil</a><a href="#cvdcloud">CVD Cloud</a><a href="#projetos">Projetos</a><a href="#reels">Reels</a><a href="#branding">Branding</a><a href="#web">Desenvolvimento Web</a><a href="#equipamentos">Equipamentos</a>
+        <a data-scramble="1" href="#perfil">Perfil</a><a href="#cvdcloud">CVD Cloud</a><a href="#reels">Reels</a><a href="#branding">Branding</a><a href="#web">Desenvolvimento Web</a><a href="#equipamentos">Equipamentos</a>
       </div>
       <div style="display:flex;flex-direction:column;gap:10px;font-size:15px">
         <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">REDES</span>
