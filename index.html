@@ -296,7 +296,7 @@ html.km-anim [data-reveal="clip"]:not([data-in]){clip-path:inset(0 0 100% 0)}
   <div style="position:fixed;inset:0;z-index:150;background:rgba(14,12,11,.97);overflow-y:auto;animation:km-in .4s ease-out">
     <div style="max-width:1100px;margin:0 auto;padding:clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:32px">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;position:sticky;top:0;padding:12px 0;background:rgba(14,12,11,.95);z-index:2;border-bottom:1px solid #2a2622">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#2e8bff">BRANDING · {{ caseNum }} / 03</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;color:#2e8bff">BRANDING · {{ caseNum }} / 04</span>
         <div style="display:flex;gap:8px">
           <button onClick="{{ casePrev }}" style="width:44px;height:44px;border:1px solid #3a352f;background:transparent;color:#ece8e2;cursor:pointer" style-hover="border-color:#2e8bff">←</button>
           <button onClick="{{ caseNext }}" style="width:44px;height:44px;border:1px solid #3a352f;background:transparent;color:#ece8e2;cursor:pointer" style-hover="border-color:#2e8bff">→</button>
@@ -312,6 +312,7 @@ html.km-anim [data-reveal="clip"]:not([data-in]){clip-path:inset(0 0 100% 0)}
         <sc-if value="{{ isOakley }}" hint-placeholder-val="{{ false }}"><video src="branding/video/oakley-japan.mp4" poster="branding/video/oakley-japan-poster.jpg" aria-label="oakley-japan" controls="{{ true }}" muted="{{ true }}" autoplay="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" style="width:100%;aspect-ratio:16/9;display:block;background:#000"></video></sc-if>
         <sc-if value="{{ isRunaway }}" hint-placeholder-val="{{ false }}"><video src="branding/video/runaway.mp4" poster="branding/video/runaway-poster.jpg" aria-label="runaway" controls="{{ true }}" muted="{{ true }}" autoplay="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" style="width:100%;aspect-ratio:16/9;display:block;background:#000"></video></sc-if>
         <sc-if value="{{ isJungle }}" hint-placeholder-val="{{ false }}"><video src="branding/video/jungle-stone.mp4" poster="branding/video/jungle-stone-poster.jpg" aria-label="jungle-stone" controls="{{ true }}" muted="{{ true }}" autoplay="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" style="width:100%;aspect-ratio:16/9;display:block;background:#000"></video></sc-if>
+        <sc-if value="{{ isSertao }}" hint-placeholder-val="{{ false }}"><video src="branding/video/sertao-ardente.mp4" poster="branding/video/sertao-ardente-poster.jpg" aria-label="Sertão Ardente" controls="{{ true }}" muted="{{ true }}" autoplay="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" style="width:100%;aspect-ratio:16/9;display:block;background:#000"></video></sc-if>
       </div>
     </div>
   </div>
@@ -520,6 +521,7 @@ class Component extends DCLogic {
     { slug: 'oakley', video: 'branding/video/oakley-japan.mp4', poster: 'branding/video/oakley-japan-poster.jpg', resumo: 'Sol nascente, caveira e onda numa só marca: a rebeldia da Oakley com a força visual do Japão.', titulo: 'Oakley Japan', tags: 'IDENTIDADE VISUAL · ISOLOGO · BUSINESS CARD', desc: 'Isologo que une a bandeira do Japão, a caveira da Oakley e a onda, que simboliza força e vida. Tipografia Gang of Three e vermelho #C40000.' },
     { slug: 'runaway', video: 'branding/video/runaway.mp4', poster: 'branding/video/runaway-poster.jpg', resumo: 'Streetwear para quem corre contra o tempo e foge do convencional, em Classic Blue e com muita velocidade.', titulo: 'Runaway', tags: 'IDENTIDADE VISUAL · ISOLOGO · STICKERS', desc: '"Fuja do convencional." Isologo com o corredor em movimento, tipografia Avenir Next LT Pro Bold e o Classic Blue #34558B, Pantone cor do ano 2020.' },
     { slug: 'jungle-stone', video: 'branding/video/jungle-stone.mp4', poster: 'branding/video/jungle-stone-poster.jpg', resumo: 'Uma Medusa que une natureza e pedra: o corre de rua dentro da selva de concreto, em verde e dourado.', titulo: 'Jungle Stone Shop', tags: 'IDENTIDADE VISUAL · IMAGOTIPO · STREETWEAR', desc: 'Natureza + pedra = Medusa, representando o "corre de rua" dentro da selva de pedra. Tipografia Nazare e paleta "jungle" em tons de verde e dourado.' },
+    { slug: 'sertao-ardente', video: 'branding/video/sertao-ardente.mp4', poster: 'branding/video/sertao-ardente-poster.jpg', resumo: 'Pimenta em conserva com alma de cerrado: o calor das profundezas encontra o perfume do sertão.', titulo: 'Sertão Ardente', tags: 'BRANDING · LOGOTIPO · EMBALAGEM', desc: '"Onde o fogo nasce da água." Marca de pimentas em conserva que une o calor do sertão ao frescor do cerrado. Logotipo com a pimenta em chama, ilustrações de touro, cacto e chapéu, e paleta em vermelho, amarelo e verde. Primeira linha: Verde Nascente, com pimenta-bode verde, pimenta-de-cheiro e raspas de limão-rosa.' },
   ];
   carBase = [
     { titulo: 'Nome do carrossel', cliente: '@CLIENTE', tags: 'INSTAGRAM · CARROSSEL · 5 SLIDES' },
@@ -549,7 +551,7 @@ class Component extends DCLogic {
     const cur = open ? B[c] : B[0];
     return {
       brands: B.map((b, i) => ({ ...b, open: () => go(i)})),
-      isOakley: open && cur.slug === 'oakley', isRunaway: open && cur.slug === 'runaway', isJungle: open && cur.slug === 'jungle-stone',
+      isOakley: open && cur.slug === 'oakley', isRunaway: open && cur.slug === 'runaway', isJungle: open && cur.slug === 'jungle-stone', isSertao: open && cur.slug === 'sertao-ardente',
       caseOpen: open,
       caseNum: String((c ?? 0) + 1).padStart(2, '0'),
       caseTitulo: cur.titulo, caseTags: cur.tags, caseDesc: cur.desc,
@@ -715,7 +717,7 @@ class Component extends DCLogic {
         ['INIT', 'portfolio.core', 'OK', 0],
         ['LOAD', 'projetos.web', '05 ITENS', 22],
         ['LOAD', 'reels.video', '05 ITENS', 46],
-        ['LOAD', 'branding.cases', '03 ITENS', 68],
+        ['LOAD', 'branding.cases', '04 ITENS', 68],
         ['CALIB', 'layout.responsivo', '1320 MAX', 86],
       ].map(([tag, item, status, at]) => ({ tag, item, status: pct >= at + 10 ? status : '···', style: { display: 'flex', justifyContent: 'space-between', gap: 16, opacity: pct >= at ? 1 : 0, transform: pct >= at ? 'none' : 'translateY(6px)', transition: 'opacity .35s, transform .35s' } })),
       introStyle: { position: 'fixed', inset: 0, zIndex: 100, background: 'radial-gradient(ellipse at 40% 20%, #221d19 0%, #141210 55%, #0e0c0b 100%)', color: '#ece8e2', display: 'flex', flexDirection: 'column', overflowY: 'auto', transform: intro === 'leaving' ? 'translateY(-100%)' : 'none', transition: 'transform 1s cubic-bezier(.8,0,.2,1)' },
