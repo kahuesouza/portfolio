@@ -272,16 +272,17 @@ html.km-anim [data-reveal="clip"]:not([data-in]){clip-path:inset(0 0 100% 0)}
       <div style="display:flex;align-items:baseline;gap:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#2e8bff">04</span><h2 data-reveal="fade" style="margin:0;font-weight:900;font-size:clamp(36px,5vw,72px);letter-spacing:-.035em;text-transform:uppercase">Branding</h2></div>
       <p style="margin:0;font-size:17px;color:#9a938a">Identidades visuais criadas do conceito à aplicação.</p>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:20px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:28px">
       <sc-for list="{{ brands }}" as="b" hint-placeholder-count="3">
         <div data-reveal="fade" data-stagger="1" style="display:flex;flex-direction:column;gap:16px">
-          <div data-tilt="1" data-cursor="ABRIR" onClick="{{ b.open }}" style="aspect-ratio:4/5;position:relative;width:100%;background:#1d1a17;border:1px solid #2a2622;cursor:pointer">
-            <div style="position:absolute;inset:0;overflow:hidden"><div role="img" aria-label="{{ b.titulo }}" style="{{ b.coverStyle }}" style-hover="transform:scale(1.05)"></div></div>
+          <div data-tilt="1" data-cursor="ABRIR" onClick="{{ b.open }}" style="aspect-ratio:16/9;position:relative;width:100%;background:#1d1a17;border:1px solid #2a2622;cursor:pointer;overflow:hidden">
+            <video class="km-brand-video" data-src="{{ b.video }}" poster="{{ b.poster }}" aria-label="{{ b.titulo }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></video>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
             <div style="display:flex;flex-direction:column;gap:6px">
               <span style="font-weight:800;font-size:clamp(20px,2vw,26px);letter-spacing:-.02em;text-transform:uppercase">{{ b.titulo }}</span>
               <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">{{ b.tags }}</span>
+              <span style="font-size:15px;line-height:1.5;color:#c9c3ba;max-width:460px;text-wrap:pretty;padding-top:6px">{{ b.resumo }}</span>
             </div>
             <button onClick="{{ b.open }}" style="flex-shrink:0;padding:10px 14px;background:transparent;border:1px solid #3a352f;color:#ece8e2;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;cursor:pointer;white-space:nowrap" style-hover="border-color:#2e8bff;color:#2e8bff">VER CASE →</button>
           </div>
@@ -307,10 +308,10 @@ html.km-anim [data-reveal="clip"]:not([data-in]){clip-path:inset(0 0 100% 0)}
         <h3 style="margin:0;font-weight:900;font-size:clamp(40px,7vw,96px);line-height:.9;letter-spacing:-.04em;text-transform:uppercase">{{ caseTitulo }}</h3>
         <p style="margin:0;font-size:18px;line-height:1.6;color:#c9c3ba;max-width:640px;text-wrap:pretty">{{ caseDesc }}</p>
       </div>
-      <div style="display:flex;justify-content:center;background:#1d1a17;border:1px solid #2a2622">
-        <sc-if value="{{ isOakley }}" hint-placeholder-val="{{ false }}"><img src="branding/oakley-japan.png" alt="Oakley Japan" style="width:100%;max-width:900px;height:auto;display:block"></sc-if>
-        <sc-if value="{{ isRunaway }}" hint-placeholder-val="{{ false }}"><img src="branding/runaway.png" alt="Runaway" style="width:100%;max-width:900px;height:auto;display:block"></sc-if>
-        <sc-if value="{{ isJungle }}" hint-placeholder-val="{{ false }}"><img src="branding/jungle-stone.png" alt="Jungle Stone Shop" style="width:100%;max-width:900px;height:auto;display:block"></sc-if>
+      <div style="background:#000;border:1px solid #2a2622">
+        <sc-if value="{{ isOakley }}" hint-placeholder-val="{{ false }}"><video src="branding/video/oakley-japan.mp4" poster="branding/video/oakley-japan-poster.jpg" aria-label="oakley-japan" controls="{{ true }}" muted="{{ true }}" autoplay="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" style="width:100%;aspect-ratio:16/9;display:block;background:#000"></video></sc-if>
+        <sc-if value="{{ isRunaway }}" hint-placeholder-val="{{ false }}"><video src="branding/video/runaway.mp4" poster="branding/video/runaway-poster.jpg" aria-label="runaway" controls="{{ true }}" muted="{{ true }}" autoplay="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" style="width:100%;aspect-ratio:16/9;display:block;background:#000"></video></sc-if>
+        <sc-if value="{{ isJungle }}" hint-placeholder-val="{{ false }}"><video src="branding/video/jungle-stone.mp4" poster="branding/video/jungle-stone-poster.jpg" aria-label="jungle-stone" controls="{{ true }}" muted="{{ true }}" autoplay="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" style="width:100%;aspect-ratio:16/9;display:block;background:#000"></video></sc-if>
       </div>
     </div>
   </div>
@@ -451,6 +452,11 @@ class Component extends DCLogic {
       vs.forEach(v => { if (!v.dataset.obs) { v.dataset.obs = '1'; v.muted = true; this.cloudIO.observe(v); } });
       if (vs.length) clearInterval(this.cloudPoll);
     }, 400);
+    this.brandPoll = setInterval(() => {
+      const vs = document.querySelectorAll('.km-brand-video');
+      vs.forEach(v => { const s = v.dataset.src; if (s && !s.includes('{{') && v.getAttribute('src') !== s) v.setAttribute('src', s); if (!v.dataset.obs && v.getAttribute('src')) { v.dataset.obs = '1'; v.muted = true; this.cloudIO.observe(v); } });
+      if (vs.length && [...vs].every(v => v.dataset.obs)) clearInterval(this.brandPoll);
+    }, 400);
     this.prepReveal();
     this.setupHover();
     this.durPoll = setInterval(() => {
@@ -470,7 +476,7 @@ class Component extends DCLogic {
     }
   }
   componentWillUnmount() {
-    clearInterval(this.t); clearInterval(this.auto); clearInterval(this.cloudPoll); this.cloudIO && this.cloudIO.disconnect(); clearInterval(this.durPoll); cancelAnimationFrame(this.raf);
+    clearInterval(this.t); clearInterval(this.auto); clearInterval(this.cloudPoll); clearInterval(this.brandPoll); this.cloudIO && this.cloudIO.disconnect(); clearInterval(this.durPoll); cancelAnimationFrame(this.raf);
     removeEventListener('scroll', this.onScroll);
     this.io && this.io.disconnect();
     this.mo && this.mo.disconnect();
@@ -511,9 +517,9 @@ class Component extends DCLogic {
     };
   }
   brandsBase = [
-    { slug: 'oakley', img: 'branding/oakley-japan.png', titulo: 'Oakley Japan', tags: 'IDENTIDADE VISUAL · ISOLOGO · BUSINESS CARD', desc: 'Isologo que une a bandeira do Japão, a caveira da Oakley e a onda, que simboliza força e vida. Tipografia Gang of Three e vermelho #C40000.' },
-    { slug: 'runaway', img: 'branding/runaway.png', titulo: 'Runaway', tags: 'IDENTIDADE VISUAL · ISOLOGO · STICKERS', desc: '"Fuja do convencional." Isologo com o corredor em movimento, tipografia Avenir Next LT Pro Bold e o Classic Blue #34558B, Pantone cor do ano 2020.' },
-    { slug: 'jungle-stone', img: 'branding/jungle-stone.png', titulo: 'Jungle Stone Shop', tags: 'IDENTIDADE VISUAL · IMAGOTIPO · STREETWEAR', desc: 'Natureza + pedra = Medusa, representando o "corre de rua" dentro da selva de pedra. Tipografia Nazare e paleta "jungle" em tons de verde e dourado.' },
+    { slug: 'oakley', video: 'branding/video/oakley-japan.mp4', poster: 'branding/video/oakley-japan-poster.jpg', resumo: 'Sol nascente, caveira e onda numa só marca: a rebeldia da Oakley com a força visual do Japão.', titulo: 'Oakley Japan', tags: 'IDENTIDADE VISUAL · ISOLOGO · BUSINESS CARD', desc: 'Isologo que une a bandeira do Japão, a caveira da Oakley e a onda, que simboliza força e vida. Tipografia Gang of Three e vermelho #C40000.' },
+    { slug: 'runaway', video: 'branding/video/runaway.mp4', poster: 'branding/video/runaway-poster.jpg', resumo: 'Streetwear para quem corre contra o tempo e foge do convencional, em Classic Blue e com muita velocidade.', titulo: 'Runaway', tags: 'IDENTIDADE VISUAL · ISOLOGO · STICKERS', desc: '"Fuja do convencional." Isologo com o corredor em movimento, tipografia Avenir Next LT Pro Bold e o Classic Blue #34558B, Pantone cor do ano 2020.' },
+    { slug: 'jungle-stone', video: 'branding/video/jungle-stone.mp4', poster: 'branding/video/jungle-stone-poster.jpg', resumo: 'Uma Medusa que une natureza e pedra: o corre de rua dentro da selva de concreto, em verde e dourado.', titulo: 'Jungle Stone Shop', tags: 'IDENTIDADE VISUAL · IMAGOTIPO · STREETWEAR', desc: 'Natureza + pedra = Medusa, representando o "corre de rua" dentro da selva de pedra. Tipografia Nazare e paleta "jungle" em tons de verde e dourado.' },
   ];
   carBase = [
     { titulo: 'Nome do carrossel', cliente: '@CLIENTE', tags: 'INSTAGRAM · CARROSSEL · 5 SLIDES' },
@@ -542,11 +548,11 @@ class Component extends DCLogic {
     const go = i => { this.setState({ caseIdx: i }); document.body.style.overflow = i == null ? '' : 'hidden'; };
     const cur = open ? B[c] : B[0];
     return {
-      brands: B.map((b, i) => ({ ...b, open: () => go(i), coverStyle: { width: '100%', height: '100%', backgroundImage: 'url(' + b.img + ')', backgroundSize: 'cover', backgroundPosition: 'top center', transition: 'transform 1.2s cubic-bezier(.2,.7,.1,1)' } })),
+      brands: B.map((b, i) => ({ ...b, open: () => go(i)})),
       isOakley: open && cur.slug === 'oakley', isRunaway: open && cur.slug === 'runaway', isJungle: open && cur.slug === 'jungle-stone',
       caseOpen: open,
       caseNum: String((c ?? 0) + 1).padStart(2, '0'),
-      caseTitulo: cur.titulo, caseTags: cur.tags, caseDesc: cur.desc, caseImg: cur.img,
+      caseTitulo: cur.titulo, caseTags: cur.tags, caseDesc: cur.desc,
       caseImgs: [1, 2, 3, 4, 5].map(k => ({ id: 'brand-' + cur.slug + '-' + k, label: 'Imagem ' + k + ' · ' + cur.titulo })),
       caseClose: () => go(null),
       casePrev: () => go(((c ?? 0) - 1 + n) % n),
