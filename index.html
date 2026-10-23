@@ -750,7 +750,7 @@ class Component extends DCLogic {
       logs: [
         ['INIT', 'portfolio.core', 'OK', 0],
         ['LOAD', 'landing.page', '01 ITEM', 22],
-        ['LOAD', 'reels.video', '05 ITENS', 46],
+        ['LOAD', 'reels.video', '08 ITENS', 46],
         ['LOAD', 'branding.cases', '04 ITENS', 68],
         ['CALIB', 'layout.responsivo', '1320 MAX', 86],
       ].map(([tag, item, status, at]) => ({ tag, item, status: pct >= at + 10 ? status : '···', style: { display: 'flex', justifyContent: 'space-between', gap: 16, opacity: pct >= at ? 1 : 0, transform: pct >= at ? 'none' : 'translateY(6px)', transition: 'opacity .35s, transform .35s' } })),
@@ -784,6 +784,9 @@ class Component extends DCLogic {
         ['reels/mes-do-cliente.mp4', 'Mês do Cliente CVDentus'],
         ['reels/ja-e-possivel.mp4', 'Já é possível fazer assim'],
         ['reels/fabrio-tecnologia.mp4', 'Fábrica de Tecnologia'],
+        ['reels/dentsurg-sem-barulho.mp4', 'DentSurg Pro: sem barulho'],
+        ['reels/piezo-24x.mp4', 'Piezo em 24x sem juros'],
+        ['reels/novela-alta-rotacao-piezo-pt2.mp4', 'Novela Alta Rotação × Piezo, parte 2'],
       ].map(([src, titulo], i) => {
         const d = (this.state.durs || {})[i], som = this.state.somOn === i;
         const vid = e => e.currentTarget.querySelector('video');
