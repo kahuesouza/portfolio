@@ -123,7 +123,7 @@ h1{font-size:clamp(28px,9.6vw,52px) !important}
       <a data-scramble="1" href="#reels">REELS</a>
       <a data-scramble="1" href="#branding">BRANDING</a>
       <a data-scramble="1" href="#web">DESENVOLVIMENTO WEB</a>
-      <a data-scramble="1" href="#equipamentos">EQUIPAMENTOS</a>
+      <a data-scramble="1" href="#equipamentos">FERRAMENTAS</a>
       <a data-scramble="1" href="#contato" style="color:#2e8bff">VAMOS CONVERSAR</a>
     </nav>
   </div>
@@ -395,13 +395,12 @@ h1{font-size:clamp(28px,9.6vw,52px) !important}
 
 <section id="equipamentos" style="border-top:1px solid #2a2622">
   <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,110px) clamp(20px,4vw,48px);display:flex;flex-direction:column;gap:48px">
-    <div style="display:flex;align-items:baseline;gap:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#2e8bff">06</span><h2 data-reveal="fade" style="margin:0;font-weight:900;font-size:clamp(36px,5vw,72px);letter-spacing:-.035em;text-transform:uppercase;white-space:nowrap">Equipamentos</h2><div style="flex:1;height:1px;background:#2a2622;align-self:center;min-width:24px"></div></div>
+    <div style="display:flex;align-items:baseline;gap:20px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#2e8bff">06</span><h2 data-reveal="fade" style="margin:0;font-weight:900;font-size:clamp(36px,5vw,72px);letter-spacing:-.035em;text-transform:uppercase;white-space:nowrap">Ferramentas</h2><div style="flex:1;height:1px;background:#2a2622;align-self:center;min-width:24px"></div></div>
     <div class="km-swipe km-w76" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:16px">
-      <sc-for list="{{ ferramentas }}" as="f" hint-placeholder-count="12">
+      <sc-for list="{{ ferramentas }}" as="f" hint-placeholder-count="22">
         <div data-reveal="fade" data-stagger="1" style="display:flex;flex-direction:column;gap:14px;padding:22px 20px;background:#1a1714;border:1px solid #2f2a25;transition:border-color .3s, background .3s, transform .3s" style-hover="border-color:#2e8bff;background:#151c26;transform:translateY(-4px)">
           <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.24em;color:#2e8bff">{{ f.cat }}</span>
           <span style="font-weight:800;font-size:19px;letter-spacing:.02em;text-transform:uppercase">{{ f.nome }}</span>
-          <div style="height:3px;background:#2f2a25"><div style="{{ f.bar }}"></div></div>
           <span style="font-size:15px;line-height:1.55;color:#a8a198;text-wrap:pretty">{{ f.desc }}</span>
         </div>
       </sc-for>
@@ -431,7 +430,7 @@ h1{font-size:clamp(28px,9.6vw,52px) !important}
       </div>
       <div style="display:flex;flex-direction:column;gap:10px;font-size:15px">
         <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">SITE</span>
-        <a data-scramble="1" href="#perfil">Perfil</a><a href="#cvdcloud">CVD Cloud</a><a href="#landing">Landing Page</a><a href="#reels">Reels</a><a href="#branding">Branding</a><a href="#web">Desenvolvimento Web</a><a href="#equipamentos">Equipamentos</a>
+        <a data-scramble="1" href="#perfil">Perfil</a><a href="#cvdcloud">CVD Cloud</a><a href="#landing">Landing Page</a><a href="#reels">Reels</a><a href="#branding">Branding</a><a href="#web">Desenvolvimento Web</a><a href="#equipamentos">Ferramentas</a>
       </div>
       <div style="display:flex;flex-direction:column;gap:10px;font-size:15px">
         <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">REDES</span>
@@ -813,25 +812,29 @@ class Component extends DCLogic {
       ],
       ...this.brandVals(),
       ferramentas: [
-        ['CÓDIGO', 'React / Next.js', 'Front-end em produção, desenvolvido com apoio de IA.', 80],
-        ['CÓDIGO', 'HTML / CSS', 'Layouts responsivos e e-mails feitos à mão.', 92],
-        ['ANÚNCIOS', 'Ads', 'Meta Ads, Google Ads e outras plataformas de anúncio.', 85],
-        ['WEB', 'WordPress', 'Temas e conteúdo para sites de clientes.', 78],
-        ['BUSCA', 'SEO', 'Otimização de sites e empresas no Google Meu Negócio.', 88],
-        ['INTERFACE', 'Adobe XD', 'Projetos web e mobile de longa data.', 82],
-        ['GRÁFICO', 'Photoshop', 'Tratamento de imagem, produto e composições.', 90],
-        ['GRÁFICO', 'Illustrator', 'Marcas, ícones e sistemas de layout.', 86],
-        ['VÍDEO', 'Premiere Pro', 'Edição e produção de vídeos institucionais e reels.', 88],
-        ['MOTION', 'After Effects', 'Animações para web e redes sociais.', 75],
-        ['COMUNICAÇÃO', 'E-mail marketing', 'Peças e layouts que funcionam até no Outlook.', 93],
-        ['IA', 'IA generativa', 'Claude, Midjourney e outras ferramentas no fluxo de trabalho.', 84],
-      ].map(([cat, nome, desc, n]) => ({ cat, nome, desc, bar: { height: '100%', width: n + '%', background: '#2e8bff' } })),
-      equipamentos: [
-        { grupo: 'DESIGN', itens: ['Figma', 'Photoshop', 'Illustrator', 'After Effects'] },
-        { grupo: 'DESENVOLVIMENTO', itens: ['HTML / CSS / JS', 'VS Code', 'Claude', 'GitHub'] },
-        { grupo: 'FOTOGRAFIA', itens: ['Lightroom'] },
-        { grupo: 'VÍDEO', itens: ['Premiere Pro', 'DaVinci Resolve'] },
-      ],
+        ['ADOBE', 'Photoshop', 'Tratamento de imagem, composições e peças de marca.'],
+        ['ADOBE', 'Illustrator', 'Marcas, ícones, catálogos e sistemas de layout.'],
+        ['ADOBE', 'Premiere Pro', 'Edição de vídeos institucionais, reels e motion.'],
+        ['ADOBE', 'Lightroom', 'Tratamento e padronização de fotos de produto.'],
+        ['ADOBE', 'Adobe Express', 'Peças rápidas de campanha, do HTML ao PNG.'],
+        ['IA', 'Claude Code', 'Desenvolvimento assistido por IA, do layout ao ar.'],
+        ['IA', 'Dreamina', 'Imagens e vídeos para campanhas e produtos.'],
+        ['IA', 'Midjourney', 'Conceitos visuais e direção de arte.'],
+        ['IA', 'ElevenLabs', 'Locução e voz sintética para vídeos.'],
+        ['IA', 'Google Flow', 'Vídeos gerados por IA, com direção de cena.'],
+        ['IA', 'HyperFrames', 'Vídeos em motion criados em HTML.'],
+        ['IA', 'Turbo Scribe', 'Transcrição de áudio e vídeo para roteiros e legendas.'],
+        ['CÓDIGO', 'HTML · CSS · JavaScript', 'Sites, landing pages, PWAs e e-mails feitos à mão.'],
+        ['CÓDIGO', 'Python', 'Automações, tratamento de arquivos e geração de PDF.'],
+        ['CÓDIGO', 'Firebase', 'Banco de dados em tempo real e painéis de gestão.'],
+        ['CÓDIGO', 'GitHub', 'Versionamento e publicação com GitHub Pages.'],
+        ['CÓDIGO', 'WordPress', 'Temas e conteúdo para sites de clientes.'],
+        ['PERFORMANCE', 'Meta Ads', 'Campanhas no Facebook e Instagram.'],
+        ['PERFORMANCE', 'Google Ads', 'Anúncios de pesquisa, display e vídeo.'],
+        ['PERFORMANCE', 'Windsor.ai', 'Métricas de redes e anúncios num só lugar.'],
+        ['GESTÃO', 'CapCut', 'Edição rápida de reels e conteúdo social.'],
+        ['GESTÃO', 'Notion', 'Organização de projetos e documentação.'],
+      ].map(([cat, nome, desc]) => ({ cat, nome, desc }))
     };
   }
 }
