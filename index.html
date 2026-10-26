@@ -30,6 +30,9 @@ html,body{overflow-x:clip;max-width:100%}
 img,video{max-width:100%}
 .km-chk,.km-btn,.km-hint{display:none}
 @media (max-width:700px){
+section .km-rc-stage .km-ring{--w:150px;--h:267px;--R:262px}
+section .km-rc-stage{height:calc(267px + 120px);margin:-20px 0}
+section .km-rc-front,section .km-rc-back{border-radius:16px}
 .km-swipe{display:flex !important;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px !important;margin:0 -16px;padding:0 16px 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 .km-swipe::-webkit-scrollbar{display:none}
 .km-swipe>*{flex:0 0 84%;scroll-snap-align:center;min-width:0}
@@ -43,6 +46,22 @@ img,video{max-width:100%}
 span[style*="width:22px"]{flex:none;width:auto !important;min-width:22px}
 .km-chk:checked~.km-btn::before{content:attr(data-less)}
 }
+.km-rc-stage{position:relative;height:calc(391px + 150px);perspective:2800px;overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none;margin:-30px 0}
+.km-rc-stage:active{cursor:grabbing}
+.km-ring{--w:220px;--h:391px;--R:380px;--step:36deg;position:absolute;left:50%;top:50%;width:var(--w);height:var(--h);margin:calc(var(--h) / -2) 0 0 calc(var(--w) / -2);transform-style:preserve-3d;will-change:transform}
+.km-rc-card{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateY(calc(var(--i) * var(--step))) translateZ(var(--R))}
+.km-rc-front,.km-rc-back{position:absolute;inset:0;border-radius:22px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#1d1a17;border:1px solid #2f2a25}
+.km-rc-front video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.km-rc-back{transform:rotateY(180deg)}
+.km-rc-back img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.32);transform:scaleX(-1);pointer-events:none}
+.km-rc-chip{position:absolute;font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#ece8e2;background:rgba(20,18,16,.8);padding:5px 8px;pointer-events:none}
+.km-rc-n{top:12px;left:12px}
+.km-rc-snd{bottom:12px;right:12px;display:none}
+.km-rc-card.is-front .km-rc-snd{display:block}
+.km-rc-snd:before{content:"TOQUE P/ SOM"}
+.km-rc-card.has-sound .km-rc-snd:before{content:"SOM LIGADO"}
+.km-rc-card.is-front .km-rc-front{border-color:#2e8bff}
+.km-rc-bar{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
 @media (max-width:700px){
 header>div{padding:10px 16px !important;gap:8px !important;flex-wrap:nowrap !important;flex-direction:column;align-items:flex-start !important}
 header nav{flex-wrap:nowrap !important;overflow-x:auto;width:100%;gap:18px !important;padding:2px 0 6px;white-space:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -366,22 +385,61 @@ h1{font-size:clamp(28px,9.6vw,52px) !important}
         <p style="margin:0;font-size:17px;color:#9a938a">Vídeos curtos que eu filmei, editei e publiquei.</p>
       </div>
     </div>
-    <div class="km-swipe km-w62" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:16px">
-      <sc-for list="{{ reels }}" as="r" hint-placeholder-count="4">
-        <div data-reveal="fade" data-stagger="1" style="display:flex;flex-direction:column;gap:12px">
-          <div data-tilt="1" data-cursor="{{ r.cursor }}" onMouseEnter="{{ r.enter }}" onMouseLeave="{{ r.leave }}" onClick="{{ r.click }}" style="aspect-ratio:9/16;position:relative;width:100%;background:#1d1a17;overflow:hidden;cursor:pointer">
-            <video data-src="{{ r.src }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="metadata" onLoadedMetadata="{{ r.meta }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></video>
-            <div style="position:absolute;top:12px;left:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#ece8e2;background:rgba(20,18,16,.8);padding:5px 8px;pointer-events:none">▶ {{ r.duracao }}</div>
-            <div style="position:absolute;bottom:12px;right:12px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:#ece8e2;background:rgba(20,18,16,.8);padding:5px 8px;pointer-events:none">{{ r.somLabel }}</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline">
-            <span style="font-weight:800;font-size:18px;letter-spacing:-.01em">{{ r.titulo }}</span>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;color:#9a938a">{{ r.num }}</span>
-          </div>
+    <div id="km-rc-stage" class="km-rc-stage" aria-label="Carrossel de reels: arraste para girar">
+      <div id="km-ring" class="km-ring" data-tilt="-7">
+        <div class="km-rc-card" style="--i:0" data-title="Watch Film">
+          <div class="km-rc-front"><video data-rsrc="reels/watch-film.mp4" poster="reels/posters/watch-film.jpg" muted loop playsinline preload="none" aria-label="Watch Film"></video><span class="km-rc-chip km-rc-n">01</span><span class="km-rc-chip km-rc-snd"></span></div>
+          <div class="km-rc-back"><img src="reels/posters/watch-film.jpg" alt="" loading="lazy"></div>
         </div>
-      </sc-for>
+        <div class="km-rc-card" style="--i:1" data-title="CVDentus History">
+          <div class="km-rc-front"><video data-rsrc="reels/cvdentus-history.mp4" poster="reels/posters/cvdentus-history.jpg" muted loop playsinline preload="none" aria-label="CVDentus History"></video><span class="km-rc-chip km-rc-n">02</span><span class="km-rc-chip km-rc-snd"></span></div>
+          <div class="km-rc-back"><img src="reels/posters/cvdentus-history.jpg" alt="" loading="lazy"></div>
+        </div>
+        <div class="km-rc-card" style="--i:2" data-title="Mês do Cliente CVDentus">
+          <div class="km-rc-front"><video data-rsrc="reels/mes-do-cliente.mp4" poster="reels/posters/mes-do-cliente.jpg" muted loop playsinline preload="none" aria-label="Mês do Cliente CVDentus"></video><span class="km-rc-chip km-rc-n">03</span><span class="km-rc-chip km-rc-snd"></span></div>
+          <div class="km-rc-back"><img src="reels/posters/mes-do-cliente.jpg" alt="" loading="lazy"></div>
+        </div>
+        <div class="km-rc-card" style="--i:3" data-title="Já é possível fazer assim">
+          <div class="km-rc-front"><video data-rsrc="reels/ja-e-possivel.mp4" poster="reels/posters/ja-e-possivel.jpg" muted loop playsinline preload="none" aria-label="Já é possível fazer assim"></video><span class="km-rc-chip km-rc-n">04</span><span class="km-rc-chip km-rc-snd"></span></div>
+          <div class="km-rc-back"><img src="reels/posters/ja-e-possivel.jpg" alt="" loading="lazy"></div>
+        </div>
+        <div class="km-rc-card" style="--i:4" data-title="Fábrica de Tecnologia">
+          <div class="km-rc-front"><video data-rsrc="reels/fabrio-tecnologia.mp4" poster="reels/posters/fabrio-tecnologia.jpg" muted loop playsinline preload="none" aria-label="Fábrica de Tecnologia"></video><span class="km-rc-chip km-rc-n">05</span><span class="km-rc-chip km-rc-snd"></span></div>
+          <div class="km-rc-back"><img src="reels/posters/fabrio-tecnologia.jpg" alt="" loading="lazy"></div>
+        </div>
+        <div class="km-rc-card" style="--i:5" data-title="DentSurg Pro: sem barulho">
+          <div class="km-rc-front"><video data-rsrc="reels/dentsurg-sem-barulho.mp4" poster="reels/posters/dentsurg-sem-barulho.jpg" muted loop playsinline preload="none" aria-label="DentSurg Pro: sem barulho"></video><span class="km-rc-chip km-rc-n">06</span><span class="km-rc-chip km-rc-snd"></span></div>
+          <div class="km-rc-back"><img src="reels/posters/dentsurg-sem-barulho.jpg" alt="" loading="lazy"></div>
+        </div>
+        <div class="km-rc-card" style="--i:6" data-title="Piezo em 24x sem juros">
+          <div class="km-rc-front"><video data-rsrc="reels/piezo-24x.mp4" poster="reels/posters/piezo-24x.jpg" muted loop playsinline preload="none" aria-label="Piezo em 24x sem juros"></video><span class="km-rc-chip km-rc-n">07</span><span class="km-rc-chip km-rc-snd"></span></div>
+          <div class="km-rc-back"><img src="reels/posters/piezo-24x.jpg" alt="" loading="lazy"></div>
+        </div>
+        <div class="km-rc-card" style="--i:7" data-title="Novela Alta Rotação × Piezo, parte 2">
+          <div class="km-rc-front"><video data-rsrc="reels/novela-alta-rotacao-piezo-pt2.mp4" poster="reels/posters/novela-alta-rotacao-piezo-pt2.jpg" muted loop playsinline preload="none" aria-label="Novela Alta Rotação × Piezo, parte 2"></video><span class="km-rc-chip km-rc-n">08</span><span class="km-rc-chip km-rc-snd"></span></div>
+          <div class="km-rc-back"><img src="reels/posters/novela-alta-rotacao-piezo-pt2.jpg" alt="" loading="lazy"></div>
+        </div>
+        <div class="km-rc-card" style="--i:8" data-title="CVD Xperience">
+          <div class="km-rc-front"><video data-rsrc="reels/cvd-xperience.mp4" poster="reels/posters/cvd-xperience.jpg" muted loop playsinline preload="none" aria-label="CVD Xperience"></video><span class="km-rc-chip km-rc-n">09</span><span class="km-rc-chip km-rc-snd"></span></div>
+          <div class="km-rc-back"><img src="reels/posters/cvd-xperience.jpg" alt="" loading="lazy"></div>
+        </div>
+        <div class="km-rc-card" style="--i:9" data-title="Vladimir: diamante CVD">
+          <div class="km-rc-front"><video data-rsrc="reels/vladimir-diamante-cvd.mp4" poster="reels/posters/vladimir-diamante-cvd.jpg" muted loop playsinline preload="none" aria-label="Vladimir: diamante CVD"></video><span class="km-rc-chip km-rc-n">10</span><span class="km-rc-chip km-rc-snd"></span></div>
+          <div class="km-rc-back"><img src="reels/posters/vladimir-diamante-cvd.jpg" alt="" loading="lazy"></div>
+        </div>
+      </div>
     </div>
-    <span class="km-hint">DESLIZE PARA O LADO →</span>
+    <div class="km-rc-bar">
+      <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+        <span id="km-rc-title" style="font-weight:800;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.02em;text-transform:uppercase;line-height:1.1">Watch Film</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:#9a938a">ARRASTE PARA GIRAR · TOQUE NO CENTRO PARA O SOM</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:13px">
+        <button data-rc-nav="prev" aria-label="Reel anterior" style="width:44px;height:44px;border:1px solid #3a352f;background:transparent;color:#ece8e2;cursor:pointer;font-size:16px" style-hover="border-color:#2e8bff">←</button>
+        <span id="km-rc-count" style="min-width:68px;text-align:center">01 / 10</span>
+        <button data-rc-nav="next" aria-label="Próximo reel" style="width:44px;height:44px;border:1px solid #3a352f;background:transparent;color:#ece8e2;cursor:pointer;font-size:16px" style-hover="border-color:#2e8bff">→</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -980,5 +1038,6 @@ class Component extends DCLogic {
   }
 }
 </script>
+<script src="./reels-ring.js" defer></script>
 </body>
 </html>
